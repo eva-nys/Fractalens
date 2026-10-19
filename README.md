@@ -104,7 +104,7 @@ IFractalGenerator --> IComplexSequence : << uses >>
 
 This project has been developed by:
 
-- Your Name Here
-- Your Name Here
-- Your Name Here
-- Your Name Here
+- Deleau Tom
+- Dunocq Louis
+- Halipre Hugo
+- Nys Eva 
