@@ -29,14 +29,16 @@ public class Complex implements IComplex {
 
     @Override
     public IComplex negate() {
-
-        return null;
+        double a1=this.getRealPart();
+        double b1=this.getImaginaryPart();
+        return new Complex(-a1,-b1);
     }
 
     @Override
     public IComplex conjugate() {
-
-        return null;
+        double a1=this.getRealPart();
+        double b1=this.getImaginaryPart();
+        return new Complex(a1,-b1);
     }
 
     @Override
