@@ -1,5 +1,7 @@
 package fr.univartois.butinfo.fractalens.complex;
 
+import java.util.Objects;
+
 /**
  * The type Complex.
  */
@@ -145,13 +147,39 @@ public class Complex implements IComplex {
      */
     @Override
     public IComplex divide(IComplex other) {
-        double a1=this.getRealPart();
-        double a2=other.getRealPart();
-        double b1=this.getImaginaryPart();
-        double b2=other.getImaginaryPart();
-        double resA= (a1*a2+b1*b2)/a2*a2+b2*b2;
-        double resB=(a2*b1-a1*b2)/a2*a2+b2*b2;
-        return new Complex(resA,resB);
+        double a1 = this.getRealPart();
+        double a2 = other.getRealPart();
+        double b1 = this.getImaginaryPart();
+        double b2 = other.getImaginaryPart();
+        double denominator = a2 * a2 + b2 * b2;
+        double resA = (a1 * a2 + b1 * b2) / denominator;
+        double resB = (a2 * b1 - a1 * b2) / denominator;
+        return new Complex(resA, resB);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Complex complex = (Complex) o;
+        return a == complex.a && b == complex.b;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(a, b);
+    }
+
+    @Override
+    public String toString() {
+        double realPart = a;
+        double imaginaryPart = b;
+        if (realPart == 0.0)
+            realPart = 0.0;
+        if (imaginaryPart == 0.0)
+            imaginaryPart = 0.0;
+        if (imaginaryPart < 0)
+            return realPart + " - " + (-imaginaryPart) + "i";
+        return realPart + " + " + imaginaryPart + "i";
+    }
 }
