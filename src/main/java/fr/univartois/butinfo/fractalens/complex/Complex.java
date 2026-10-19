@@ -1,17 +1,23 @@
 package fr.univartois.butinfo.fractalens.complex;
 
-public class ComplexeOperations implements IComplex {
+public class Complex implements IComplex {
+    private final double a;
+    private final double b;
 
+    public  Complex(double a, double b){
+        this.a=a;
+        this.b=b;
+    }
     @Override
     public double getRealPart() {
 
-        return 0;
+        return a;
     }
 
     @Override
     public double getImaginaryPart() {
 
-        return 0;
+        return b;
     }
 
     @Override
@@ -58,8 +64,13 @@ public class ComplexeOperations implements IComplex {
 
     @Override
     public IComplex divide(IComplex other) {
-
-        return null;
+        double a1=this.getRealPart();
+        double a2=other.getRealPart();
+        double b1=this.getImaginaryPart();
+        double b2=this.getImaginaryPart();
+        double resA= (a1*a2+b1*b2)/a2*a2+b2*b2;
+        double resB=(a2*b1-a1*b2)/a2*a2+b2*b2;
+        return new Complex(resA,resB);
     }
 
 }
