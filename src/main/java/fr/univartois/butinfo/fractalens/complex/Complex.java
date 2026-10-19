@@ -46,8 +46,13 @@ public class Complex implements IComplex {
 
     @Override
     public IComplex subtract(IComplex other) {
-
-        return null;
+        double a1=this.getRealPart();
+        double a2=other.getRealPart();
+        double b1=this.getImaginaryPart();
+        double b2=other.getImaginaryPart();
+        double a = a1 - a2;
+        double b = b1 - b2;
+        return new Complex(a, b);
     }
 
     @Override
