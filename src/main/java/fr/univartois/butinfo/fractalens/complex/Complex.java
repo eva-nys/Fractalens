@@ -22,8 +22,9 @@ public class Complex implements IComplex {
 
     @Override
     public double abs() {
-
-        return 0;
+        double a1=this.getRealPart();
+        double b1=this.getImaginaryPart();
+        return Math.sqrt(a1*a1+b1*b1);
     }
 
     @Override
