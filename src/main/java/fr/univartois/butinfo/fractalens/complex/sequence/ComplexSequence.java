@@ -56,10 +56,10 @@ public class ComplexSequence implements Iterator<IComplex> {
         if (!hasNext()) {
             throw new NoSuchElementException("Iteration limit reached or divergent sequence.");
         }
-
+        IComplex tmp = current;
         current = sequence.computeNext(current);
         nbIterations++;
 
-        return current;
+        return tmp;
     }
 }
