@@ -22,8 +22,9 @@ public class Complex implements IComplex {
 
     @Override
     public double abs() {
-
-        return 0;
+        double a1=this.getRealPart();
+        double b1=this.getImaginaryPart();
+        return Math.sqrt(a1*a1+b1*b1);
     }
 
     @Override
@@ -57,14 +58,22 @@ public class Complex implements IComplex {
 
     @Override
     public IComplex multiply(double value) {
-
-        return null;
+        double a1=this.getRealPart();
+        double b1=this.getImaginaryPart();
+        double resA=value*a1;
+        double resB=value*b1;
+        return new Complex(resA,resB);
     }
 
     @Override
     public IComplex multiply(IComplex other) {
-
-        return null;
+        double a1=this.getRealPart();
+        double a2=other.getRealPart();
+        double b1=this.getImaginaryPart();
+        double b2=other.getImaginaryPart();
+        double resA= (a1*a2-b1*b2);
+        double resB=(a2*b1+a1*b2);
+        return new Complex(resA,resB);
     }
 
     @Override
@@ -72,7 +81,7 @@ public class Complex implements IComplex {
         double a1=this.getRealPart();
         double a2=other.getRealPart();
         double b1=this.getImaginaryPart();
-        double b2=this.getImaginaryPart();
+        double b2=other.getImaginaryPart();
         double resA= (a1*a2+b1*b2)/a2*a2+b2*b2;
         double resB=(a2*b1-a1*b2)/a2*a2+b2*b2;
         return new Complex(resA,resB);
