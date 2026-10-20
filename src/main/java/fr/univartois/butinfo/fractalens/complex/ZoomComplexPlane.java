@@ -6,8 +6,8 @@ public class ZoomComplexPlane implements IComplexPlane{
 
     double zoom;
 
-    public ZoomComplexPlane(IComplexPlane decorateur, double zoom) {
-        this.decorator = decorateur;
+    public ZoomComplexPlane(IComplexPlane decorator, double zoom) {
+        this.decorator = decorator;
         this.zoom = zoom;
     }
 
