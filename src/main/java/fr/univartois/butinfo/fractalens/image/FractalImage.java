@@ -1,9 +1,16 @@
 package fr.univartois.butinfo.fractalens.image;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class FractalImage implements IFractalImage{
+
+    private BufferedImage img;
+
+    public FractalImage(BufferedImage img){
+        this.img=img;
+    }
 
     @Override
     public int getHeight() {
