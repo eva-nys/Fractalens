@@ -1,10 +1,10 @@
 package fr.univartois.butinfo.fractalens.complex;
 
-import java.awt.*;
 import java.awt.Color;
 import java.util.List;
 
-public class ColoredFixe implements IColor{
+public class ColoredFixe implements IColor {
+
     private final List<Color> colors;
 
     public ColoredFixe(ColorPalette palette) {
@@ -14,15 +14,11 @@ public class ColoredFixe implements IColor{
     public ColoredFixe(List<Color> colors) {
         this.colors = colors;
     }
+
     @Override
     public Color coloredDot(int iteration, int max) {
-
-        if (iteration >= max) {
-            return Color.BLACK; // Couleur pour les points qui convergent
-        }
-        int index =  iteration / max * colors.size();
+        int index = (int) ((double) iteration / max * colors.size());// Conversion en double pour éviter la division entière
         index = Math.min(index, colors.size() - 1);
         return colors.get(index);
     }
-
 }
