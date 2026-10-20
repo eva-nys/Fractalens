@@ -5,10 +5,10 @@ import java.awt.*;
 public class Gradient {
 
     // first color of gradiant
-    Color firstColor;
+    private final Color firstColor;
 
     // second color of gradiant
-    Color secondColor;
+    private final Color secondColor;
 
     /**
      * builder of the Gradient class
