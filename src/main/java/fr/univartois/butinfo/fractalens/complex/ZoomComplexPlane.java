@@ -2,18 +2,18 @@ package fr.univartois.butinfo.fractalens.complex;
 
 public class ZoomComplexPlane implements IComplexPlane{
 
-    private IComplexPlane decorator;
+    private IComplexPlane decorated;
 
-    double zoom;
+    private double zoom;
 
     public ZoomComplexPlane(IComplexPlane decorator, double zoom) {
-        this.decorator = decorator;
+        this.decorated = decorator;
         this.zoom = zoom;
     }
 
     @Override
     public IComplex asComplex(int row, int column) {
-        IComplex beforeZoom = decorator.asComplex(row, column);
+        IComplex beforeZoom = decorated.asComplex(row, column);
         return beforeZoom.multiply(zoom);
     }
 
