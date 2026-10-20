@@ -7,36 +7,45 @@ import java.awt.Color;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-/**
- * Unit tests for the {@link Inverse} class including edge cases.
- *
- * @author Eva Nys
- * @version 1.0
- */
 class InverseTest {
 
-    private Inverse inverse;
+    private IColor invertedPalette;
+
+    private static class MockPalette implements IColor {
+        private final Color colorToReturn;
+
+        public MockPalette(Color colorToReturn) {
+            this.colorToReturn = colorToReturn;
+        }
+
+        @Override
+        public Color coloredDot(int iteration, int max) {
+            return colorToReturn;
+        }
+    }
 
     @BeforeEach
     void initPalette() {
-        inverse = new Inverse();
+        IColor mockPalette = new MockPalette(new Color(100, 150, 200));
+        invertedPalette = new Inverse(mockPalette);
     }
 
     @Test
     void testStandardInversion() {
-        Color baseColor = new Color(100, 150, 200);
-        Color result = inverse.inversePalette(baseColor);
+        Color result = invertedPalette.coloredDot(10, 100);
 
         assertEquals(255 - 100, result.getRed());
         assertEquals(255 - 150, result.getGreen());
         assertEquals(255 - 200, result.getBlue());
-
-        assertNotEquals(baseColor, result);
+        assertNotEquals(new Color(100, 150, 200), result);
     }
 
     @Test
     void testBlackInversionToWhite() {
-        Color result = inverse.inversePalette(Color.BLACK);
+        IColor blackPalette = new MockPalette(Color.BLACK);
+        IColor invertedBlack = new Inverse(blackPalette);
+
+        Color result = invertedBlack.coloredDot(0, 100);
 
         assertEquals(255, result.getRed());
         assertEquals(255, result.getGreen());
@@ -46,7 +55,10 @@ class InverseTest {
 
     @Test
     void testWhiteInversionToBlack() {
-        Color result = inverse.inversePalette(Color.WHITE);
+        IColor whitePalette = new MockPalette(Color.WHITE);
+        IColor invertedWhite = new Inverse(whitePalette);
+
+        Color result = invertedWhite.coloredDot(100, 100);
 
         assertEquals(0, result.getRed());
         assertEquals(0, result.getGreen());
