@@ -2,6 +2,7 @@ package fr.univartois.butinfo.fractalens.complex;
 
 import  java.awt.Color;
 
+
 public class Colored implements IColor {
 
 
