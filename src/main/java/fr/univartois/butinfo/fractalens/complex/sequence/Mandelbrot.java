@@ -15,16 +15,18 @@ public class Mandelbrot implements IComplexSequence {
     private final IComplex c;
     private final IComplex z0;
     private final int maxIterations;
+    private final int power;
 
-    public Mandelbrot(IComplex c, IComplex z0, int maxIterations) {
+    public Mandelbrot(IComplex c, IComplex z0, int maxIterations, int power) {
         this.c = c;
         this.z0 = z0;
         this.maxIterations = maxIterations;
+        this.power = power;
     }
 
     @Override
     public IComplex computeNext(IComplex previous) {
-        return previous.multiply(previous).add(z0);
+        return previous.power(power).add(z0);
     }
 
     /**

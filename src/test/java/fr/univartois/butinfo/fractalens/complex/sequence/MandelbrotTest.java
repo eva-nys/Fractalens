@@ -19,8 +19,7 @@ class MandelbrotTest {
      * @return The created complex number.
      */
     private static IComplex createComplex(double realPart, double imaginaryPart) {
-
-        return new Complex(realPart,imaginaryPart);
+        return new Complex(realPart, imaginaryPart);
     }
 
     /**
@@ -33,8 +32,9 @@ class MandelbrotTest {
      *
      * @return The created Julia's sequence.
      */
-    private static IComplexSequence createMandelbrotSequence(IComplex first, IComplex constant, int nbTerms) {
-        return new Mandelbrot(constant,first,nbTerms);
+    private static IComplexSequence createMandelbrotSequence(IComplex first, IComplex constant,
+                                                             int nbTerms, int power) {
+        return new Mandelbrot(constant, first, nbTerms, power);
     }
 
     /**
@@ -45,16 +45,29 @@ class MandelbrotTest {
     void testComputeNext() {
         IComplex z0 = createComplex(0.5, 0);
         IComplex c = createComplex(0, 0);
-        IComplexSequence mandelbrot = createMandelbrotSequence(z0, c, 50);
+        IComplexSequence mandelbrot = createMandelbrotSequence(z0, c, 50, 2);
 
-        IComplex z1 = createComplex(0.75, 0);
+        IComplex z1 = createComplex(0.75, 0);        // 0.5² + 0.5
         assertEquals(z1, mandelbrot.computeNext(z0));
 
-        IComplex z2 = createComplex(1.0625, 0);
+        IComplex z2 = createComplex(1.0625, 0);      // 0.75² + 0.5
         assertEquals(z2, mandelbrot.computeNext(z1));
 
-        IComplex z3 = createComplex(1.62890625, 0);
+        IComplex z3 = createComplex(1.62890625, 0);  // 1.0625² + 0.5
         assertEquals(z3, mandelbrot.computeNext(z2));
+    }
+
+    @Test
+    void testComputeNextWithPowerThree() {
+        IComplex z0 = createComplex(0.5, 0);
+        IComplex c = createComplex(0, 0);
+        IComplexSequence mandelbrot = createMandelbrotSequence(z0, c, 50, 3);
+
+        IComplex z1 = createComplex(0.625, 0);       // 0.5³ + 0.5
+        assertEquals(z1, mandelbrot.computeNext(z0));
+
+        IComplex z2 = createComplex(0.744140625, 0); // 0.625³ + 0.5
+        assertEquals(z2, mandelbrot.computeNext(z1));
     }
 
     /**
@@ -64,11 +77,11 @@ class MandelbrotTest {
      */
     @Test
     void testIteratorOnConvergence() {
-        IComplex z0 = createComplex(-0.5, 0);
+        IComplex z0 = createComplex(-1, 0);          // suite : -1, 0, -1, 0...
         IComplex c = createComplex(0, 0);
         int nbTerms = 50;
 
-        IComplexSequence mandelbrot = createMandelbrotSequence(z0, c, nbTerms);
+        IComplexSequence mandelbrot = createMandelbrotSequence(z0, c, nbTerms, 2);
         int nbIterations = 0;
 
         for (var _ : mandelbrot) {
@@ -85,11 +98,11 @@ class MandelbrotTest {
      */
     @Test
     void testIteratorOnDivergence() {
-        IComplex z0 = createComplex(2, 0);
-        IComplex c = createComplex(0.5, 0.5);
+        IComplex z0 = createComplex(2, 0);           // suite : 2, 6, 38...
+        IComplex c = createComplex(0, 0);
         int nbTerms = 50;
 
-        IComplexSequence mandelbrot = createMandelbrotSequence(z0, c, nbTerms);
+        IComplexSequence mandelbrot = createMandelbrotSequence(z0, c, nbTerms, 2);
         int nbIterations = 0;
 
         for (var _ : mandelbrot) {
@@ -98,5 +111,4 @@ class MandelbrotTest {
 
         assertTrue(nbIterations < nbTerms);
     }
-
 }
