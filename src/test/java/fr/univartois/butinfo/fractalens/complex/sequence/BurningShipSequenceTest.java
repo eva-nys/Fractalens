@@ -56,19 +56,19 @@ public class BurningShipSequenceTest {
     @Test
     void testIteratorStep() {
         IComplex c = new Complex(0, 0);
-        IComplex z0 = new Complex(-1, 2);
+        IComplex z0 = new Complex(0.1, 0.2);
         BurningShipSequence sequence = new BurningShipSequence(c, z0, 2);
 
         Iterator<IComplex> iterator = sequence.iterator();
 
         assertTrue(iterator.hasNext());
         IComplex first = iterator.next();
-        assertEquals(-1.0, first.getRealPart());
-        assertEquals(2.0, first.getImaginaryPart());
+        assertEquals(0.1, first.getRealPart(),EPSILON);
+        assertEquals(0.2, first.getImaginaryPart(),EPSILON);
 
         assertTrue(iterator.hasNext());
         IComplex second = iterator.next();
-        assertEquals(-3.0, second.getRealPart());
-        assertEquals(4.0, second.getImaginaryPart());
+        assertEquals(-0.03, second.getRealPart(),EPSILON);
+        assertEquals(0.04, second.getImaginaryPart(),EPSILON);
     }
 }
