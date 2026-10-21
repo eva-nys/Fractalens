@@ -30,7 +30,7 @@ public class GeneralComplexSequence implements IComplexSequence {
         return new ComplexSequence(this, z0, max);
     }
 
-    @Override
+/*    @Override
     public void forEach(Consumer<? super IComplex> action) {
         IComplexSequence.super.forEach(action);
     }
@@ -38,5 +38,5 @@ public class GeneralComplexSequence implements IComplexSequence {
     @Override
     public Spliterator<IComplex> spliterator() {
         return IComplexSequence.super.spliterator();
-    }
+    }*/
 }
