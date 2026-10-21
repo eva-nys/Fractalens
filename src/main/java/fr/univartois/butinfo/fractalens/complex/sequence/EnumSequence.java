@@ -16,7 +16,7 @@ public enum EnumSequence {
 
 
     GENERALIZED_JULIA((pixel, max) -> {
-        IComplex c = new Complex(0.285, 0.01); // Constante de Julia (modifiable)
+        IComplex c = new Complex(0.285, 0.01);
         int power = 3;
         return new GeneralizedJulia(c, pixel, max, power);
     }),
