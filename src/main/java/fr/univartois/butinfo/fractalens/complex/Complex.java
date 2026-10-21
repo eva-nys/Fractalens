@@ -219,4 +219,21 @@ public class Complex implements IComplex {
         }
         return a + " + " + b + "i";
     }
+
+
+    /**
+     * raise to the power a value
+     *
+     * @param power The complex number to power
+     *
+     * @return The result of {@code this / other}.
+     */
+    @Override
+    public IComplex power(int power) {
+        IComplex test = new Complex(1, 0);
+        for (int i = 0; i < power; i++) {
+            test = test.multiply(this);
+        }
+        return test;
+    }
 }
