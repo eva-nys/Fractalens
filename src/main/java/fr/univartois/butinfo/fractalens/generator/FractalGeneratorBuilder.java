@@ -65,4 +65,13 @@ public class FractalGeneratorBuilder {
     public FractalGenerator build() {
         return new FractalGenerator(this);
     }
+
+    public int getWidth() { return width; }
+    public int getHeight() { return height; }
+    public double getZoomFactor() { return zoomFactor; }
+    public IComplex getCenter() { return center; }
+    public int getMaxIterations() { return maxIterations; }
+    public String getFileName() { return fileName; }
+    public BinaryOperator<IComplex> getFunction() { return Function; }
+    public IColor getPalette() { return palette; }
 }
