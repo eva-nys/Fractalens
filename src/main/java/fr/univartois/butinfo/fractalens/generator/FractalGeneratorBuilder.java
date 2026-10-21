@@ -3,6 +3,7 @@ package fr.univartois.butinfo.fractalens.generator;
 import fr.univartois.butinfo.fractalens.complex.ColorPalette;
 import fr.univartois.butinfo.fractalens.complex.IColor;
 import fr.univartois.butinfo.fractalens.complex.IComplex;
+import fr.univartois.butinfo.fractalens.complex.sequence.EnumSequence;
 
 import java.util.function.BinaryOperator;
 
