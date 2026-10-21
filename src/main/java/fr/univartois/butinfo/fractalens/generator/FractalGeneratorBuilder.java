@@ -1,36 +1,44 @@
 package fr.univartois.butinfo.fractalens.generator;
 
-import fr.univartois.butinfo.fractalens.complex.ColorPalette;
-import fr.univartois.butinfo.fractalens.complex.IColor;
-import fr.univartois.butinfo.fractalens.complex.IComplex;
+import fr.univartois.butinfo.fractalens.complex.*;
 import fr.univartois.butinfo.fractalens.complex.sequence.EnumSequence;
+import fr.univartois.butinfo.fractalens.complex.sequence.IComplexSequence;
+import fr.univartois.butinfo.fractalens.image.FractalImage;
+import fr.univartois.butinfo.fractalens.image.IFractalImage;
 
+import java.awt.image.BufferedImage;
+import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
 
 public class FractalGeneratorBuilder {
-
+    private IFractalImage image;
     private int width;
     private int height;
+    private IComplexPlane plane;
     private double zoomFactor;
     private IComplex center;
     private int maxIterations;
     private String fileName;
-    private BinaryOperator<IComplex> Function;
+    private BiFunction<IComplex, Integer, IComplexSequence> function;
     private IColor palette;
 
     public FractalGeneratorBuilder withSize(int width, int height) {
         this.width = width;
         this.height = height;
+        this.plane = new ComplexPlane(width, height);
+        this.image = new FractalImage(new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB));
         return this;
     }
 
     public FractalGeneratorBuilder withZoom(double zoomFactor) {
         this.zoomFactor = zoomFactor;
+        this.plane = new ZoomComplexPlane(plane, zoomFactor);
         return this;
     }
 
     public FractalGeneratorBuilder centeredAt(IComplex center) {
         this.center = center;
+        this.plane = new TranslateComplexPlane(plane, center);
         return this;
     }
 
@@ -43,8 +51,8 @@ public class FractalGeneratorBuilder {
         return this;
     }
 
-    public FractalGeneratorBuilder usingSequence(BinaryOperator<IComplex> function) {
-        this.Function = function;
+    public FractalGeneratorBuilder usingSequence(BiFunction<IComplex, Integer, IComplexSequence> function) {
+        this.function = function;
         return this;
     }
 
@@ -72,6 +80,17 @@ public class FractalGeneratorBuilder {
     public IComplex getCenter() { return center; }
     public int getMaxIterations() { return maxIterations; }
     public String getFileName() { return fileName; }
-    public BinaryOperator<IComplex> getFunction() { return Function; }
+    public BiFunction<IComplex, Integer, IComplexSequence> getFunction() { return function; }
     public IColor getPalette() { return palette; }
+
+    public IComplexPlane getPlane() {
+
+        return plane;
+    }
+
+    public IFractalImage getImage() {
+
+        return image;
+    }
+
 }
