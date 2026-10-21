@@ -2,7 +2,7 @@ package fr.univartois.butinfo.fractalens.complex;
 
 import java.awt.*;
 
-public class Gradient {
+public class Gradient implements IColor {
 
     // first color of gradiant
     private final Color firstColor;
@@ -20,13 +20,14 @@ public class Gradient {
         this.secondColor = secondColor;
     }
 
-    public Color colorDot(int iteration, int max) {
+    @Override
+    public Color coloredDot(int iteration, int max) {
+
         float ratio = iteration / (float)max;
         float red = firstColor.getRed() + ratio * (secondColor.getRed() - firstColor.getRed());
         float green = firstColor.getGreen() + ratio * (secondColor.getGreen() - firstColor.getGreen());
         float blue = firstColor.getBlue() + ratio * (secondColor.getBlue() - firstColor.getBlue());
         return new Color(red, green, blue);
     }
-
 
 }
