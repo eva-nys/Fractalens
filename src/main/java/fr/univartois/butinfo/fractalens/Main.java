@@ -32,7 +32,6 @@ public class Main {
         int maxIterations = 250;
         double zoomFactor = 0.001;
         String outputPath = "julia_sprint3_1.png";
-
         BufferedImage bufferedImage = new BufferedImage(width, height, 1);
         FractalImage image = new FractalImage(bufferedImage);
         IComplexPlane plane = new ComplexPlane(width, height);
@@ -51,15 +50,14 @@ public class Main {
         int maxIterations = 250;
         double zoomFactor = 0.001;
         String outputPath = "julia_sprint3_2.png";
-
         BufferedImage bufferedImage = new BufferedImage(width, height, 1);
         FractalImage image = new FractalImage(bufferedImage);
         IComplexPlane plane = new ComplexPlane(width, height);
         plane = new ZoomComplexPlane(plane, zoomFactor);
-        IComplex center = new Complex(-0.47, -0.211);
+        IComplex center = new Complex(-0.47, -0.21);
         plane = new TranslateComplexPlane(plane, center);
         IComplex c = new Complex(0.285, 0.01);
-        IColor fixedPalette = new ColoredFixe(ColorPalette.OCEAN);
+        IColor fixedPalette = new ColoredFixe(ColorPalette.JULIA_SPRINT3);
         IColor palette = new ColoredRVB(fixedPalette, 0.0, 1.0, 1.0);
         FractalGenerator generator = new FractalGenerator(image, plane, (z0, max) -> new JuliaSequence(c, z0, max), maxIterations, nbIter -> palette.coloredDot(nbIter, maxIterations), outputPath);
         generator.generateImage();
