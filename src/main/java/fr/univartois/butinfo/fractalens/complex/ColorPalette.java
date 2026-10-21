@@ -474,7 +474,16 @@ public enum ColorPalette {
             new Color(60, 20, 70),
             new Color(160, 70, 90),
             new Color(226, 217, 226)
-    ));
+    )),
+
+    MINT_CHOCOLATE(List.of(
+            new Color(25, 15, 10),     // Chocolat noir profond (fond)
+            new Color(70, 40, 25),     // Marron chocolat
+            new Color(30, 90, 70),     // Menthe sombre
+            new Color(75, 180, 145),   // Vert menthe doux
+            new Color(150, 240, 210),  // Menthe glacée
+            new Color(230, 255, 245)   // Blanc mentholé
+     ));
 
     private final List<Color> colors;
 
