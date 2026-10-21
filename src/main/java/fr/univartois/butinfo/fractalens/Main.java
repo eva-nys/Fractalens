@@ -78,7 +78,7 @@ public class Main {
         IComplex center = new Complex(-0.75, 0.0);
         plane = new TranslateComplexPlane(plane, center);
         IColor palette = new ColoredFixe(ColorPalette.FIRE);
-        FractalGenerator generator = new FractalGenerator(image, plane, (z0, max) -> new Mandelbrot(z0, z0, max), maxIterations, nbIter -> palette.coloredDot(nbIter, maxIterations), outputPath);
+        FractalGenerator generator = new FractalGenerator(image, plane, (z0, max) -> new Mandelbrot(z0, z0, max,2), maxIterations, nbIter -> palette.coloredDot(nbIter, maxIterations), outputPath);
         generator.generateImage();
     }
 
