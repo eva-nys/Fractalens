@@ -68,7 +68,6 @@ public class FractalGenerator implements IFractalGenerator {
                 image.setColor(row, column, computePixelColor(row, column));
             }
         }
-        saveImage();
         return image;
     }
 
