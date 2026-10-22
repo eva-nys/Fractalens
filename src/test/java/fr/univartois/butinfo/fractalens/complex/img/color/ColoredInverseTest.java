@@ -1,4 +1,4 @@
-package fr.univartois.butinfo.fractalens.complex;
+package fr.univartois.butinfo.fractalens.complex.img.color;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;

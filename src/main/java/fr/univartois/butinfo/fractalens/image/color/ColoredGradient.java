@@ -27,7 +27,7 @@ public class ColoredGradient implements IColor {
         float red = firstColor.getRed() + ratio * (secondColor.getRed() - firstColor.getRed());
         float green = firstColor.getGreen() + ratio * (secondColor.getGreen() - firstColor.getGreen());
         float blue = firstColor.getBlue() + ratio * (secondColor.getBlue() - firstColor.getBlue());
-        return new Color(red, green, blue);
+        return new Color((int) red, (int) green, (int) blue);
     }
 
 }

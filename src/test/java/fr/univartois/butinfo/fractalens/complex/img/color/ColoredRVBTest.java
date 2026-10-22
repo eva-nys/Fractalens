@@ -1,4 +1,4 @@
-package fr.univartois.butinfo.fractalens.complex;
+package fr.univartois.butinfo.fractalens.complex.img.color;
 
 import fr.univartois.butinfo.fractalens.image.color.ColoredRVB;
 import fr.univartois.butinfo.fractalens.image.color.IColor;
@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Test class for the {@link ColoredRVB} decorator.
  */
-public class ColoredGreyRVBTest {
+public class ColoredRVBTest {
 
     /**
      * Tests filtering to keep only the red channel.

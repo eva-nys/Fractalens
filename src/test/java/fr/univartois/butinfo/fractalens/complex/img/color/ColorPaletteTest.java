@@ -1,4 +1,4 @@
-package fr.univartois.butinfo.fractalens.complex;
+package fr.univartois.butinfo.fractalens.complex.img.color;
 
 import fr.univartois.butinfo.fractalens.image.color.ColorPalette;
 import org.junit.jupiter.api.Test;
