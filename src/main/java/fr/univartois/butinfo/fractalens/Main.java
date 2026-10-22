@@ -124,8 +124,36 @@ public class Main {
 //        generator.generateImage();
     }
      */
+
+    /**
+     * Teste l'animation de zoom sur la fractale de Mandelbrot (Vallée des Hippocampes).
+     */
+    public static void testMandelbrotZoomAnimation() {
+
+        int width = 400;
+        int height = 400;
+        int maxIterations = 250;
+        double startZoom = 0.01;
+        String outputPath = "mandelbrot_zoom_anim.gif";
+
+        IColor palette = new ColoredFixe(ColorPalette.FIRE);
+
+        IComplex coolCenter = new Complex(-0.743643887, 0.131825904);
+
+        var animationGenerator = new FractalGeneratorBuilder()
+                .withSize(width, height)
+                .withZoom(startZoom)
+                .centeredAt(coolCenter) // Utilisation du nouveau point de mire
+                .withMaxIterations(maxIterations)
+                .usingSequence(fr.univartois.butinfo.fractalens.complex.sequence.EnumSequence.MANDELBROT)
+                .usingPalette(palette)
+                .outputToFile(outputPath)
+                .buildZoomAnimation(40, 0.80);
+
+        animationGenerator.generateImage();
+    }
+
     public static void main(String[] args) {
-        juliaSprint2();
-        juliaSprint3Image1();
+        testMandelbrotZoomAnimation();
     }
 }
