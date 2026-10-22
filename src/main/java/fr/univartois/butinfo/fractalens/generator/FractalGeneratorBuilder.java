@@ -99,7 +99,6 @@ public class FractalGeneratorBuilder {
 
     public IFractalGenerator buildZoomAnimation(int nbFrames, double zoomFactorStep) {
         List<IFractalGenerator> generators = new ArrayList<>();
-        List<BufferedImage> frames = new ArrayList<>();
         double currentZoom = this.zoomFactor;
 
         for (int i = 0; i < nbFrames; i++) {
@@ -116,7 +115,7 @@ public class FractalGeneratorBuilder {
             currentZoom *= zoomFactorStep;
         }
 
-        return new FractalImageComposite(generators, this.fileName, frames);
+        return new FractalImageComposite(generators, this.fileName);
     }
 
     public IFractalGenerator buildJuliaRotationAnimation(IComplex initialC, int nbFrames) {
@@ -141,7 +140,7 @@ public class FractalGeneratorBuilder {
             generators.add(generator);
         }
 
-        return new FractalImageComposite(generators, this.fileName, frames);
+        return new FractalImageComposite(generators, this.fileName);
     }
 
     public IFractalImage getImage() {
