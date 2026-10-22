@@ -72,4 +72,9 @@ public class FractalImage implements IFractalImage {
         File destinationFile = new File(path);
         ImageIO.write(img, "png", destinationFile);
     }
+
+    @Override
+    public BufferedImage asBufferedImage() {
+        return this.img;
+    }
 }
