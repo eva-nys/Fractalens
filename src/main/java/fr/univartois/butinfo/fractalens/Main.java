@@ -153,7 +153,31 @@ public class Main {
         animationGenerator.generateImage();
     }
 
+    public static void testJuliaRotationAnimation() {
+
+        int width = 400;
+        int height = 400;
+        int maxIterations = 150;
+        double zoomFactor = 0.01;
+        String outputPath = "julia_rotation_anim.gif";
+
+        IComplex initialC = new Complex(-0.8, 0.156);
+
+        IColor palette = new ColoredFixe(ColorPalette.CYBERPUNK);
+
+        var animationGenerator = new FractalGeneratorBuilder()
+                .withSize(width, height)
+                .withZoom(zoomFactor)
+                .centeredAt(new Complex(0, 0)) // Il faut toujours centrer Julia sur 0 pour bien la voir
+                .withMaxIterations(maxIterations)
+                .usingPalette(palette)
+                .outputToFile(outputPath)
+                .buildJuliaRotationAnimation(initialC, 60);
+
+        animationGenerator.generateImage();
+    }
     public static void main(String[] args) {
-        testMandelbrotZoomAnimation();
+        //testMandelbrotZoomAnimation();
+        testJuliaRotationAnimation();
     }
 }
