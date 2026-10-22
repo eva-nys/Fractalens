@@ -89,7 +89,7 @@ public class FractalGeneratorBuilder {
 
     public FractalGenerator build() {
         if (function == null) {
-            throw new IllegalStateException("Une séquence doit être définie avant de construire le générateur.");
+            throw new IllegalStateException("Une séquence doit être définie avant de construire le générateur");
         }
         if (palette == null && paletteEnum != null) {
             palette = paletteEnum.create(maxIterations);
