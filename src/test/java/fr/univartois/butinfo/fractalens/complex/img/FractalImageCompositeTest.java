@@ -1,9 +1,10 @@
-package fr.univartois.butinfo.fractalens.image;
+package fr.univartois.butinfo.fractalens.complex.img;
 
 import fr.univartois.butinfo.fractalens.complex.Complex;
 import fr.univartois.butinfo.fractalens.complex.sequence.EnumSequence;
 import fr.univartois.butinfo.fractalens.generator.FractalGeneratorBuilder;
 import fr.univartois.butinfo.fractalens.generator.IFractalGenerator;
+import fr.univartois.butinfo.fractalens.image.FractalImageComposite;
 import fr.univartois.butinfo.fractalens.image.color.EnumPalette;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,9 +15,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class FractalImageCompositeTest {
 
@@ -43,7 +42,7 @@ class FractalImageCompositeTest {
         }
 
         frames = new ArrayList<>();
-        composite = new FractalImageComposite(generators, testGifPath, frames);
+        composite = new FractalImageComposite(generators, testGifPath);
     }
 
     @AfterEach
@@ -63,16 +62,16 @@ class FractalImageCompositeTest {
 
     @Test
     void testGenerateImageCreatesGifFile() {
-
         composite.generateImage();
-
+        composite.saveImage();
         File file = new File(testGifPath);
         assertTrue(file.exists());
-        assertEquals(2, frames.size());
     }
 
     @Test
-    void testComputePixelColorReturnsNull() {
-        assertNull(composite.computePixelColor(0, 0));
+    void testComputePixelColorThrowsException() {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            composite.computePixelColor(0, 0);
+        });
     }
 }
