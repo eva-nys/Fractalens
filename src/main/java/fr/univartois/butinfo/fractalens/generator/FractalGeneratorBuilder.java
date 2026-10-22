@@ -7,12 +7,15 @@ import fr.univartois.butinfo.fractalens.complex.plane.TranslateComplexPlane;
 import fr.univartois.butinfo.fractalens.complex.plane.ZoomComplexPlane;
 import fr.univartois.butinfo.fractalens.complex.sequence.EnumSequence;
 import fr.univartois.butinfo.fractalens.complex.sequence.IComplexSequence;
+import fr.univartois.butinfo.fractalens.complex.sequence.JuliaSequence;
 import fr.univartois.butinfo.fractalens.image.FractalImage;
 import fr.univartois.butinfo.fractalens.image.IFractalImage;
 import fr.univartois.butinfo.fractalens.image.color.EnumPalette;
 import fr.univartois.butinfo.fractalens.image.color.IColor;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiFunction;
 
 public class FractalGeneratorBuilder {
@@ -105,4 +108,30 @@ public class FractalGeneratorBuilder {
         return image;
     }
 
+
+    public List<BufferedImage> zoomAnimation(IComplex center, double startZoom,
+                                             double endZoom, int frameCount) {
+        if (frameCount < 2) {
+            throw new IllegalArgumentException("An animation needs at least 2 frames");
+        }
+
+        List<BufferedImage> frames = new ArrayList<>(frameCount);
+        double ratio = Math.pow(endZoom / startZoom, 1.0 / (frameCount - 1));
+        double zoom = startZoom;
+
+        for (int i = 0; i < frameCount; i++) {
+            FractalGenerator generator = new FractalGeneratorBuilder()
+                    .withSize(width, height)
+                    .withZoom(zoom)
+                    .withTranslation(center)
+                    .usingPalette(palette)
+                    .usingSequence(function)
+                    .withMaxIterations(maxIterations)
+                    .build();
+
+            frames.add(generator.generateImage().asBufferedImage());
+            zoom *= ratio;
+        }
+        return frames;
+    }
 }
