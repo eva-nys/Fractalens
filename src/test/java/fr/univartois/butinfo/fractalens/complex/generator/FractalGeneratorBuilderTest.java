@@ -112,8 +112,12 @@ class FractalGeneratorBuilderTest {
      */
     @Test
     void testUsingPaletteEnum() {
-        FractalGeneratorBuilder builder = new FractalGeneratorBuilder().withMaxIterations(100)
-                .usingPalette(EnumPalette.FIRE);
+        FractalGeneratorBuilder builder = new FractalGeneratorBuilder();
+        builder.withMaxIterations(100);
+        builder.usingSequence(EnumSequence.MANDELBROT); // Obligatoire pour pouvoir build()
+        builder.usingPalette(EnumPalette.FIRE);
+
+        builder.build(); // <-- On déclenche la construction réelle
 
         assertNotNull(builder.getPalette());
     }

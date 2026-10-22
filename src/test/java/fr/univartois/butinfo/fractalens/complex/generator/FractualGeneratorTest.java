@@ -1,4 +1,4 @@
-package fr.univartois.butinfo.fractalens.generator;
+package fr.univartois.butinfo.fractalens.complex.generator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -9,6 +9,8 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import fr.univartois.butinfo.fractalens.generator.FractalGenerator;
+import fr.univartois.butinfo.fractalens.generator.FractalGeneratorBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -89,6 +91,7 @@ class FractalGeneratorTest {
         FractalGenerator generator = createGenerator(file.toString());
 
         generator.generateImage();
+        generator.saveImage(); // <-- On sauvegarde manuellement maintenant !
 
         assertTrue(Files.exists(file));
     }
