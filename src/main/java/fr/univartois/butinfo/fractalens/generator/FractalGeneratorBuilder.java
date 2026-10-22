@@ -169,4 +169,41 @@ public class FractalGeneratorBuilder {
     public String getFileName() { return fileName; }
     public BiFunction<IComplex, Integer, IComplexSequence> getFunction() { return function; }
     public IColor getPalette() { return palette; }
+
+    public IComplexPlane getPlane() {
+
+        return plane;
+    }
+
+    public IFractalImage getImage() {
+
+        return image;
+    }
+
+
+    public List<BufferedImage> zoomAnimation(IComplex center, double startZoom,
+                                             double endZoom, int frameCount) {
+        if (frameCount < 2) {
+            throw new IllegalArgumentException("An animation needs at least 2 frames");
+        }
+
+        List<BufferedImage> frames = new ArrayList<>(frameCount);
+        double ratio = Math.pow(endZoom / startZoom, 1.0 / (frameCount - 1));
+        double zoom = startZoom;
+
+        for (int i = 0; i < frameCount; i++) {
+            FractalGenerator generator = new FractalGeneratorBuilder()
+                    .withSize(width, height)
+                    .withZoom(zoom)
+                    .withTranslation(center)
+                    .usingPalette(palette)
+                    .usingSequence(function)
+                    .withMaxIterations(maxIterations)
+                    .build();
+
+            frames.add(generator.generateImage().asBufferedImage());
+            zoom *= ratio;
+        }
+        return frames;
+    }
 }
