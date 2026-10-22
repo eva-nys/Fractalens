@@ -173,4 +173,40 @@ class FractalGeneratorBuilderTest {
         assertNotNull(generator);
     }
 
+    @Test
+    void testZoomAnimated() {
+        int nbFrames = 5;
+        double zoomStep = 1.5;
+
+        IFractalGenerator animation = new FractalGeneratorBuilder()
+                .withSize(20, 10)
+                .withZoom(1.0)
+                .centeredAt(new Complex(0, 0))
+                .withMaxIterations(50)
+                .usingSequence(EnumSequence.MANDELBROT)
+                .usingPalette(EnumPalette.FIRE)
+                .outputToFile("zoom_animation.gif")
+                .buildZoomAnimation(nbFrames, zoomStep);
+
+        assertNotNull(animation);
+    }
+
+    @Test
+    void testRotationAnimated() {
+        IComplex initialC = new Complex(-0.4, 0.6);
+        int nbFrames = 10;
+
+        IFractalGenerator animation = new FractalGeneratorBuilder()
+                .withSize(20, 10)
+                .withZoom(1.0)
+                .centeredAt(new Complex(0, 0))
+                .withMaxIterations(50)
+                .usingSequence(EnumSequence.GENERALIZED_JULIA)
+                .usingPalette(EnumPalette.FIRE)
+                .outputToFile("julia_rotation.gif")
+                .buildJuliaRotationAnimation(initialC, nbFrames);
+
+        assertNotNull(animation);
+    }
+
 }
