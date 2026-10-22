@@ -2,6 +2,9 @@ package fr.univartois.butinfo.fractalens.complex;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import fr.univartois.butinfo.fractalens.complex.plane.ComplexPlane;
+import fr.univartois.butinfo.fractalens.complex.plane.IComplexPlane;
+import fr.univartois.butinfo.fractalens.complex.plane.ZoomComplexPlane;
 import org.junit.jupiter.api.Test;
 
 /**

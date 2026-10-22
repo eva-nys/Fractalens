@@ -3,6 +3,9 @@ package fr.univartois.butinfo.fractalens.complex;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import fr.univartois.butinfo.fractalens.complex.plane.ComplexPlane;
+import fr.univartois.butinfo.fractalens.complex.plane.IComplexPlane;
+import fr.univartois.butinfo.fractalens.complex.plane.TranslateComplexPlane;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

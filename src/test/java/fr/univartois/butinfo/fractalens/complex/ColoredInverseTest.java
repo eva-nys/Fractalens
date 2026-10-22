@@ -4,10 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.awt.Color;
+
+import fr.univartois.butinfo.fractalens.image.color.IColor;
+import fr.univartois.butinfo.fractalens.image.color.ColoredInverse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class InverseTest {
+class ColoredInverseTest {
 
     private IColor invertedPalette;
 
@@ -27,7 +30,7 @@ class InverseTest {
     @BeforeEach
     void initPalette() {
         IColor mockPalette = new MockPalette(new Color(100, 150, 200));
-        invertedPalette = new Inverse(mockPalette);
+        invertedPalette = new ColoredInverse(mockPalette);
     }
 
     @Test
@@ -43,7 +46,7 @@ class InverseTest {
     @Test
     void testBlackInversionToWhite() {
         IColor blackPalette = new MockPalette(Color.BLACK);
-        IColor invertedBlack = new Inverse(blackPalette);
+        IColor invertedBlack = new ColoredInverse(blackPalette);
 
         Color result = invertedBlack.coloredDot(0, 100);
 
@@ -56,7 +59,7 @@ class InverseTest {
     @Test
     void testWhiteInversionToBlack() {
         IColor whitePalette = new MockPalette(Color.WHITE);
-        IColor invertedWhite = new Inverse(whitePalette);
+        IColor invertedWhite = new ColoredInverse(whitePalette);
 
         Color result = invertedWhite.coloredDot(100, 100);
 

@@ -4,11 +4,10 @@ import java.awt.Color;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.function.BiFunction;
-import java.util.function.IntFunction;
 
-import fr.univartois.butinfo.fractalens.complex.IColor;
+import fr.univartois.butinfo.fractalens.image.color.IColor;
 import fr.univartois.butinfo.fractalens.complex.IComplex;
-import fr.univartois.butinfo.fractalens.complex.IComplexPlane;
+import fr.univartois.butinfo.fractalens.complex.plane.IComplexPlane;
 import fr.univartois.butinfo.fractalens.complex.sequence.IComplexSequence;
 import fr.univartois.butinfo.fractalens.image.IFractalImage;
 

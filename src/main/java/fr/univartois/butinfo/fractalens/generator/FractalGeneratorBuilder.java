@@ -1,14 +1,19 @@
 package fr.univartois.butinfo.fractalens.generator;
 
 import fr.univartois.butinfo.fractalens.complex.*;
+import fr.univartois.butinfo.fractalens.complex.plane.ComplexPlane;
+import fr.univartois.butinfo.fractalens.complex.plane.IComplexPlane;
+import fr.univartois.butinfo.fractalens.complex.plane.TranslateComplexPlane;
+import fr.univartois.butinfo.fractalens.complex.plane.ZoomComplexPlane;
 import fr.univartois.butinfo.fractalens.complex.sequence.EnumSequence;
 import fr.univartois.butinfo.fractalens.complex.sequence.IComplexSequence;
 import fr.univartois.butinfo.fractalens.image.FractalImage;
 import fr.univartois.butinfo.fractalens.image.IFractalImage;
+import fr.univartois.butinfo.fractalens.image.color.EnumPalette;
+import fr.univartois.butinfo.fractalens.image.color.IColor;
 
 import java.awt.image.BufferedImage;
 import java.util.function.BiFunction;
-import java.util.function.BinaryOperator;
 
 public class FractalGeneratorBuilder {
     private IFractalImage image;
@@ -36,6 +41,11 @@ public class FractalGeneratorBuilder {
         return this;
     }
 
+    public FractalGeneratorBuilder withTranslation(IComplex translationFactor){
+        this.plane=new TranslateComplexPlane(plane,translationFactor);
+        return this;
+    }
+
     public FractalGeneratorBuilder centeredAt(IComplex center) {
         this.center = center;
         this.plane = new TranslateComplexPlane(plane, center);
@@ -48,6 +58,7 @@ public class FractalGeneratorBuilder {
     }
 
     public FractalGeneratorBuilder usingSequence(EnumSequence sequence) {
+        this.function=sequence::create;
         return this;
     }
 
@@ -56,7 +67,8 @@ public class FractalGeneratorBuilder {
         return this;
     }
 
-    public FractalGeneratorBuilder usingPalette(ColorPalette paletteEnum) {
+    public FractalGeneratorBuilder usingPalette(EnumPalette paletteEnum) {
+        this.palette=paletteEnum.create(maxIterations);
         return this;
     }
 

@@ -1,4 +1,4 @@
-package fr.univartois.butinfo.fractalens.complex;
+package fr.univartois.butinfo.fractalens.image.color;
 
 import java.awt.*;
 

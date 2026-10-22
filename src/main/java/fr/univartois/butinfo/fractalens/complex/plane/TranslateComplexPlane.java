@@ -1,4 +1,6 @@
-package fr.univartois.butinfo.fractalens.complex;
+package fr.univartois.butinfo.fractalens.complex.plane;
+
+import fr.univartois.butinfo.fractalens.complex.IComplex;
 
 /**
  * Decorates an {@link IComplexPlane} by applying a translation

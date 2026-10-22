@@ -1,15 +1,13 @@
 package fr.univartois.butinfo.fractalens;
 
 import fr.univartois.butinfo.fractalens.complex.*;
-import fr.univartois.butinfo.fractalens.complex.sequence.BurningShipSequence;
-import fr.univartois.butinfo.fractalens.complex.sequence.GeneralComplexSequence;
 import fr.univartois.butinfo.fractalens.complex.sequence.JuliaSequence;
-import fr.univartois.butinfo.fractalens.complex.sequence.Mandelbrot;
 import fr.univartois.butinfo.fractalens.generator.FractalGenerator;
 import fr.univartois.butinfo.fractalens.generator.FractalGeneratorBuilder;
-import fr.univartois.butinfo.fractalens.image.FractalImage;
-
-import java.awt.image.BufferedImage;
+import fr.univartois.butinfo.fractalens.image.color.ColorPalette;
+import fr.univartois.butinfo.fractalens.image.color.ColoredGrey;
+import fr.univartois.butinfo.fractalens.image.color.ColoredFixe;
+import fr.univartois.butinfo.fractalens.image.color.IColor;
 
 public class Main {
 
@@ -25,7 +23,7 @@ public class Main {
         FractalGenerator generator = new FractalGeneratorBuilder()
                 .withSize(width, height)
                 .withZoom(zoomFactor)
-                .usingPalette(new Colored())
+                .usingPalette(new ColoredGrey())
                 .usingSequence((z0, max) -> new JuliaSequence(c, z0, max))
                 .withMaxIterations(maxIterations)
                 .outputToFile(outputPath)
@@ -40,19 +38,23 @@ public class Main {
         int maxIterations = 250;
         double zoomFactor = 0.001;
         String outputPath = "julia_sprint3_1.png";
-        BufferedImage bufferedImage = new BufferedImage(width, height, 1);
-        FractalImage image = new FractalImage(bufferedImage);
-        IComplexPlane plane = new ComplexPlane(width, height);
-        plane = new ZoomComplexPlane(plane, zoomFactor);
-        IComplex center = new Complex(0.1, 0.6);
-        plane = new TranslateComplexPlane(plane, center);
         IComplex c = new Complex(-0.4, 0.6);
         IColor palette = new ColoredFixe(ColorPalette.FIRE);
-//        FractalGenerator generator = new FractalGenerator(image, plane, (z0, max) -> new JuliaSequence(c, z0, max), maxIterations, nbIter -> palette.coloredDot(nbIter, maxIterations), outputPath);
-//        generator.generateImage();
+        FractalGenerator generator=new FractalGeneratorBuilder()
+                .withSize(width,height)
+                .withZoom(zoomFactor)
+                .withTranslation(new Complex(0.1, 0.6))
+                .usingPalette(palette)
+                .usingSequence((z0, max) -> new JuliaSequence(c, z0, max))
+                .withMaxIterations(maxIterations)
+                .outputToFile(outputPath)
+                .build();
+        generator.generateImage();
+        generator.saveImage();
+
     }
 
-    public static void juliaSprint3Image2() {
+    /**public static void juliaSprint3Image2() {
         int width = 800;
         int height = 800;
         int maxIterations = 250;
@@ -121,10 +123,9 @@ public class Main {
 //        FractalGenerator generator = new FractalGenerator(image, plane, (z0, max) -> new GeneralComplexSequence((zn, initial) -> zn.multiply(zn).add(c), z0, max), maxIterations, nbIter -> palette.coloredDot(nbIter, maxIterations), outputPath);
 //        generator.generateImage();
     }
+     */
     public static void main(String[] args) {
-        sprint4Image3();
-        burningShipSprint3Image();
-        mandelbrotSprint3Image();
         juliaSprint2();
+        juliaSprint3Image1();
     }
 }

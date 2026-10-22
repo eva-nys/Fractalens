@@ -2,24 +2,25 @@ package fr.univartois.butinfo.fractalens.complex;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import fr.univartois.butinfo.fractalens.image.color.ColoredGrey;
 import org.junit.jupiter.api.Test;
 import java.awt.Color;
 
 /**
- * The {@code ColoredTest} class tests the implementation of {@link Colored}.
+ * The {@code ColoredTest} class tests the implementation of {@link ColoredGrey}.
  *
  * @author Eva Nys
  * @version 0.1.0
  */
-class ColoredTest {
+class ColoredGreyTest {
 
     /**
      * Tests the color generation at zero iterations.
      */
     @Test
     void testColoredDot() {
-        Colored colored = new Colored();
-        Color color = colored.coloredDot(0, 100);
+        ColoredGrey coloredGrey = new ColoredGrey();
+        Color color = coloredGrey.coloredDot(0, 100);
         assertEquals(255, color.getRed());
     }
 }

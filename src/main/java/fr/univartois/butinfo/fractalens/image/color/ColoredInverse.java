@@ -1,11 +1,11 @@
-package fr.univartois.butinfo.fractalens.complex;
+package fr.univartois.butinfo.fractalens.image.color;
 
 import java.awt.*;
 
-public class Inverse implements IColor {
+public class ColoredInverse implements IColor {
     private final IColor decor;
 
-    public Inverse(IColor decor) {
+    public ColoredInverse(IColor decor) {
         this.decor = decor;
     }
 

@@ -25,6 +25,8 @@ package fr.univartois.butinfo.fractalens.complex;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import fr.univartois.butinfo.fractalens.complex.plane.ComplexPlane;
+import fr.univartois.butinfo.fractalens.complex.plane.IComplexPlane;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -62,7 +64,7 @@ class ComplexPlaneTest {
 
     /**
      * Test method for
-     * {@link fr.univartois.butinfo.fractalens.complex.IComplexPlane#asComplex(int, int)}.
+     * {@link IComplexPlane#asComplex(int, int)}.
      */
     @Test
     void testAsComplex() {

@@ -1,5 +1,6 @@
 package fr.univartois.butinfo.fractalens.complex;
 
+import fr.univartois.butinfo.fractalens.image.color.ColoredFixe;
 import org.junit.jupiter.api.Test;
 
 import java.awt.Color;
@@ -10,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Test class for {@link ColoredFixe}.
  */
-class ColoredFixeTest {
+class ColoredGreyFixeTest {
     /**
      * Tests that iteration 0 returns the first color in the palette.
      */

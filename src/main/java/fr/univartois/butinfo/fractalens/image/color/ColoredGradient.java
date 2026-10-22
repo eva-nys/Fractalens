@@ -1,8 +1,8 @@
-package fr.univartois.butinfo.fractalens.complex;
+package fr.univartois.butinfo.fractalens.image.color;
 
 import java.awt.*;
 
-public class Gradient implements IColor {
+public class ColoredGradient implements IColor {
 
     // first color of gradiant
     private final Color firstColor;
@@ -15,7 +15,7 @@ public class Gradient implements IColor {
      * @param firstColor initialization of the first color
      * @param secondColor initialization of the second color
      */
-    public Gradient(Color firstColor, Color secondColor) {
+    public ColoredGradient(Color firstColor, Color secondColor) {
         this.firstColor = firstColor;
         this.secondColor = secondColor;
     }

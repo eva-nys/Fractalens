@@ -1,4 +1,7 @@
-package fr.univartois.butinfo.fractalens.complex;
+package fr.univartois.butinfo.fractalens.complex.plane;
+
+import fr.univartois.butinfo.fractalens.complex.Complex;
+import fr.univartois.butinfo.fractalens.complex.IComplex;
 
 /**
  * La classe {@code ComplexPlane} fournit une implémentation de base de l'interface {@link IComplexPlane},

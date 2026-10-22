@@ -1,5 +1,6 @@
 package fr.univartois.butinfo.fractalens.complex;
 
+import fr.univartois.butinfo.fractalens.image.color.ColorPalette;
 import org.junit.jupiter.api.Test;
 
 import java.awt.Color;
