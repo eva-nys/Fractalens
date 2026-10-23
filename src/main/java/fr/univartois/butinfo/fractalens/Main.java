@@ -12,27 +12,26 @@ import fr.univartois.butinfo.fractalens.image.color.IColor;
 import picocli.CommandLine;
 
 /**
- * The Interface class is the command-line entry point of FractaLens.
+ * The Main class is the command-line entry point of FractaLens.
  * It reads the options given by the user and configures a
  * {@link FractalGeneratorBuilder} accordingly.
  */
 @CommandLine.Command(
         name = "fractale",
         description = "Generate a fractal",
-        mixinStandardHelpOptions = true,
         version = "1.0.0"
 )
 public class Main implements Callable<Integer> {
 
     /**
-     * The kinds of animation that can be generated.
+     * The kinds of image that can be generated.
      */
-    public enum Animation {
+    public enum ImageType {
 
-        /** No animation: a static image is generated. */
-        NONE,
+        /** A single static image. */
+        SINGLE,
 
-        /** A zoom on the center of the fractal. */
+        /** A progressive zoom on the center of the fractal. */
         ZOOM,
 
         /** A rotation of the constant of a Julia sequence. */
@@ -40,82 +39,96 @@ public class Main implements Callable<Integer> {
     }
 
     @CommandLine.Option(
-            names = {"-W", "--width"},
-            description = "width of the fractal (default = ${DEFAULT-VALUE})"
+            names = {"--help"},
+            usageHelp = true,
+            description = "display this help message"
     )
-    private int width = 400;
+    private boolean helpRequested;
 
     @CommandLine.Option(
-            names = {"-H", "--height"},
-            description = "height of the fractal (default = ${DEFAULT-VALUE})"
+            names = {"-V", "--version"},
+            versionHelp = true,
+            description = "display the version"
     )
-    private int height = 400;
+    private boolean versionRequested;
 
     @CommandLine.Option(
-            names = {"-Z", "--zoom"},
-            description = "zoom of the fractal: size of one pixel in the complex plane "
-                    + "(default = ${DEFAULT-VALUE})"
-    )
-    private double zoomFactor = 0.005;
-
-    @CommandLine.Option(
-            names = {"-P", "--palette"},
-            description = "colour palette of the fractal (default = ${DEFAULT-VALUE}, "
-                    + "values = ${COMPLETION-CANDIDATES})"
-    )
-    private EnumPalette palette = EnumPalette.GRAYSCALE;
-
-    @CommandLine.Option(
-            names = {"-S", "--sequence"},
-            description = "sequence used to build the fractal (default = ${DEFAULT-VALUE}, "
-                    + "values = ${COMPLETION-CANDIDATES}); ignored for the rotation animation"
+            names = {"-f", "--fractal-name"},
+            description = "name of the fractal (default = ${DEFAULT-VALUE}, "
+                          + "values = ${COMPLETION-CANDIDATES}); ignored for the rotation type"
     )
     private EnumSequence sequence = EnumSequence.MANDELBROT;
 
     @CommandLine.Option(
-            names = {"-M", "--maxIterations"},
-            description = "the maximum of iterations (default = ${DEFAULT-VALUE})"
+            names = {"-h", "--height"},
+            description = "height of the image in pixels (default = ${DEFAULT-VALUE})"
+    )
+    private int height = 400;
+
+    @CommandLine.Option(
+            names = {"-w", "--width"},
+            description = "width of the image in pixels (default = ${DEFAULT-VALUE})"
+    )
+    private int width = 400;
+
+    @CommandLine.Option(
+            names = {"-s", "--scale"},
+            description = "scale of the image: size of one pixel in the complex plane "
+                          + "(default = ${DEFAULT-VALUE})"
+    )
+    private double scale = 0.005;
+
+    @CommandLine.Option(
+            names = {"-x", "--focus-x"},
+            description = "real part of the center of the image (default = ${DEFAULT-VALUE})"
+    )
+    private double focusX = 0.0;
+
+    @CommandLine.Option(
+            names = {"-y", "--focus-y"},
+            description = "imaginary part of the center of the image (default = ${DEFAULT-VALUE})"
+    )
+    private double focusY = 0.0;
+
+    @CommandLine.Option(
+            names = {"-n", "--nb-iterations"},
+            description = "maximum number of iterations (default = ${DEFAULT-VALUE})"
     )
     private int maxIterations = 100;
 
     @CommandLine.Option(
-            names = {"-N", "--name"},
-            description = "the name of the output file (default = ${DEFAULT-VALUE}); "
-                    + "use a .gif extension for animations"
+            names = {"-p", "--palette-name"},
+            description = "name of the colour palette (default = ${DEFAULT-VALUE}, "
+                          + "values = ${COMPLETION-CANDIDATES})"
+    )
+    private EnumPalette palette = EnumPalette.GRAYSCALE;
+
+    @CommandLine.Option(
+            names = {"-t", "--type"},
+            description = "type of image to generate (default = ${DEFAULT-VALUE}, "
+                          + "values = ${COMPLETION-CANDIDATES})"
+    )
+    private ImageType type = ImageType.SINGLE;
+
+    @CommandLine.Option(
+            names = {"-o", "--output"},
+            description = "name of the output file (default = ${DEFAULT-VALUE}); "
+                          + "use a .gif extension for zoom and rotation"
     )
     private String outputPath = "fractal.png";
 
     @CommandLine.Option(
-            names = {"-A", "--animated"},
-            description = "the kind of animation (default = ${DEFAULT-VALUE}, "
-                    + "values = ${COMPLETION-CANDIDATES})"
-    )
-    private Animation animation = Animation.NONE;
-
-    @CommandLine.Option(
-            names = {"-F", "--frames"},
-            description = "the number of frames of the animation (default = ${DEFAULT-VALUE})"
+            names = {"--frames"},
+            description = "number of frames of the animation (default = ${DEFAULT-VALUE})"
     )
     private int frames = 40;
 
     @CommandLine.Option(
             names = {"--zoom-step"},
-            description = "the factor applied to the zoom between two frames "
-                    + "of a zoom animation (default = ${DEFAULT-VALUE})"
+            description = "factor applied to the scale between two frames "
+                          + "of a zoom (default = ${DEFAULT-VALUE})"
     )
     private double zoomStep = 0.80;
-
-    @CommandLine.Option(
-            names = {"--center-real"},
-            description = "real part of the center of the fractal (default = ${DEFAULT-VALUE})"
-    )
-    private double centerReal = 0.0;
-
-    @CommandLine.Option(
-            names = {"--center-imaginary"},
-            description = "imaginary part of the center of the fractal (default = ${DEFAULT-VALUE})"
-    )
-    private double centerImaginary = 0.0;
 
     /**
      * Launches the command-line interface.
@@ -128,6 +141,7 @@ public class Main implements Callable<Integer> {
                 .execute(args);
         System.exit(exitCode);
     }
+
     /**
      * Executes the command based on the provided configuration options.
      *
@@ -140,34 +154,35 @@ public class Main implements Callable<Integer> {
         }
 
         System.out.println("Generating the fractal...");
+        System.out.println(" -- fractal : " + sequence);
         System.out.println(" -- width : " + width);
         System.out.println(" -- height : " + height);
-        System.out.println(" -- zoom : " + zoomFactor);
+        System.out.println(" -- scale : " + scale);
+        System.out.println(" -- focus : " + focusX + " + " + focusY + "i");
         System.out.println(" -- palette : " + palette);
-        System.out.println(" -- sequence : " + sequence);
-        System.out.println(" -- maxIterations : " + maxIterations);
-        System.out.println(" -- animation : " + animation);
+        System.out.println(" -- nbIterations : " + maxIterations);
+        System.out.println(" -- type : " + type);
 
         IColor colors = palette.create(maxIterations);
-        IComplex center = new Complex(centerReal, centerImaginary);
+        IComplex center = new Complex(focusX, focusY);
 
         FractalGeneratorBuilder builder = new FractalGeneratorBuilder()
                 .withSize(width, height)
-                .withZoom(zoomFactor)
+                .withZoom(scale)
                 .centeredAt(center)
                 .withMaxIterations(maxIterations)
                 .usingSequence(sequence)
                 .usingPalette(colors)
                 .outputToFile(outputPath);
 
-        switch (animation) {
+        switch (type) {
             case ZOOM -> builder.buildZoomAnimation(frames, zoomStep).generateImage();
 
             case ROTATION -> {
                 IComplex initialC = new Complex(-0.8, 0.156);
                 builder.buildJuliaRotationAnimation(initialC, frames).generateImage();
             }
-            case NONE -> {
+            case SINGLE -> {
                 IFractalGenerator generator = builder.build();
                 generator.generateImage();
                 generator.saveImage();
@@ -192,17 +207,17 @@ public class Main implements Callable<Integer> {
             System.err.println("The maximum number of iterations must be strictly positive.");
             return false;
         }
-        if (zoomFactor <= 0) {
-            System.err.println("The zoom must be strictly positive.");
+        if (scale <= 0) {
+            System.err.println("The scale must be strictly positive.");
             return false;
         }
-        if (animation != Animation.NONE) {
+        if (type != ImageType.SINGLE) {
             if (frames <= 0) {
                 System.err.println("The number of frames must be strictly positive.");
                 return false;
             }
             if (!outputPath.toLowerCase().endsWith(".gif")) {
-                System.err.println("An animation must be saved in a .gif file.");
+                System.err.println("A zoom or a rotation must be saved in a .gif file.");
                 return false;
             }
         }
