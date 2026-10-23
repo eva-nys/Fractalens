@@ -13,6 +13,8 @@ import fr.univartois.butinfo.fractalens.image.IFractalImage;
 
 /**
  * The FractalGenerator class generates a fractal image based on a complex number sequence
+ *
+ * @author Tom Deleau, Hugo Halipré, Louis Dunocq
  */
 public class FractalGenerator implements IFractalGenerator {
 
