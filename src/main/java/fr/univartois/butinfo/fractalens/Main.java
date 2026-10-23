@@ -128,7 +128,11 @@ public class Main implements Callable<Integer> {
                 .execute(args);
         System.exit(exitCode);
     }
-
+    /**
+     * Executes the command based on the provided configuration options.
+     *
+     * @return An integer exit code (0 for success, non-zero for failure).
+     */
     @Override
     public Integer call() {
         if (!areOptionsValid()) {
