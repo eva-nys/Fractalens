@@ -177,7 +177,7 @@ public class Main {
         animationGenerator.generateImage();
     }
     public static void main(String[] args) {
-        //testMandelbrotZoomAnimation();
+        testMandelbrotZoomAnimation();
         testJuliaRotationAnimation();
     }
 }

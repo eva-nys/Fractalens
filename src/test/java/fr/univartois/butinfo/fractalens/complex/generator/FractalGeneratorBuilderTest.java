@@ -1,10 +1,13 @@
-package fr.univartois.butinfo.fractalens.generator;
+package fr.univartois.butinfo.fractalens.complex.generator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
+import fr.univartois.butinfo.fractalens.generator.FractalGenerator;
+import fr.univartois.butinfo.fractalens.generator.FractalGeneratorBuilder;
+import fr.univartois.butinfo.fractalens.generator.IFractalGenerator;
 import org.junit.jupiter.api.Test;
 
 import fr.univartois.butinfo.fractalens.complex.Complex;

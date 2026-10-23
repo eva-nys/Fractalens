@@ -120,7 +120,6 @@ public class FractalGeneratorBuilder {
 
     public IFractalGenerator buildJuliaRotationAnimation(IComplex initialC, int nbFrames) {
         List<IFractalGenerator> generators = new ArrayList<>();
-        List<BufferedImage> frames = new ArrayList<>();
         double angleStep = (2.0 * Math.PI) / nbFrames;
 
         for (int i = 0; i < nbFrames; i++) {
