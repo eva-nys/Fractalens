@@ -1,183 +1,209 @@
 package fr.univartois.butinfo.fractalens;
 
-import fr.univartois.butinfo.fractalens.complex.*;
-import fr.univartois.butinfo.fractalens.complex.sequence.JuliaSequence;
-import fr.univartois.butinfo.fractalens.generator.FractalGenerator;
+import java.util.concurrent.Callable;
+
+import fr.univartois.butinfo.fractalens.complex.Complex;
+import fr.univartois.butinfo.fractalens.complex.IComplex;
+import fr.univartois.butinfo.fractalens.complex.sequence.EnumSequence;
 import fr.univartois.butinfo.fractalens.generator.FractalGeneratorBuilder;
-import fr.univartois.butinfo.fractalens.image.color.ColorPalette;
-import fr.univartois.butinfo.fractalens.image.color.ColoredGrey;
-import fr.univartois.butinfo.fractalens.image.color.ColoredFixe;
+import fr.univartois.butinfo.fractalens.generator.IFractalGenerator;
+import fr.univartois.butinfo.fractalens.image.color.EnumPalette;
 import fr.univartois.butinfo.fractalens.image.color.IColor;
+import picocli.CommandLine;
 
-public class Main {
-
-    public static void juliaSprint2() {
-        int width = 800;
-        int height = 600;
-        int maxIterations = 100;
-        double zoomFactor = 0.004;
-        String outputPath = "julia_fractal.png";
-
-
-        IComplex c = new Complex(-0.4, 0.6);
-        FractalGenerator generator = new FractalGeneratorBuilder()
-                .withSize(width, height)
-                .withZoom(zoomFactor)
-                .usingPalette(new ColoredGrey())
-                .usingSequence((z0, max) -> new JuliaSequence(c, z0, max))
-                .withMaxIterations(maxIterations)
-                .outputToFile(outputPath)
-                .build();
-        generator.generateImage();
-        generator.saveImage();
-    }
-
-    public static void juliaSprint3Image1() {
-        int width = 800;
-        int height = 800;
-        int maxIterations = 250;
-        double zoomFactor = 0.001;
-        String outputPath = "julia_sprint3_1.png";
-        IComplex c = new Complex(-0.4, 0.6);
-        IColor palette = new ColoredFixe(ColorPalette.FIRE);
-        FractalGenerator generator=new FractalGeneratorBuilder()
-                .withSize(width,height)
-                .withZoom(zoomFactor)
-                .withTranslation(new Complex(0.1, 0.6))
-                .usingPalette(palette)
-                .usingSequence((z0, max) -> new JuliaSequence(c, z0, max))
-                .withMaxIterations(maxIterations)
-                .outputToFile(outputPath)
-                .build();
-        generator.generateImage();
-        generator.saveImage();
-
-    }
-
-    /**public static void juliaSprint3Image2() {
-        int width = 800;
-        int height = 800;
-        int maxIterations = 250;
-        double zoomFactor = 0.001;
-        String outputPath = "julia_sprint3_2.png";
-        BufferedImage bufferedImage = new BufferedImage(width, height, 1);
-        FractalImage image = new FractalImage(bufferedImage);
-        IComplexPlane plane = new ComplexPlane(width, height);
-        plane = new ZoomComplexPlane(plane, zoomFactor);
-        IComplex center = new Complex(-0.47, -0.21);
-        plane = new TranslateComplexPlane(plane, center);
-        IComplex c = new Complex(0.285, 0.01);
-        IColor fixedPalette = new ColoredFixe(ColorPalette.JULIA_SPRINT3);
-        IColor palette = new ColoredRVB(fixedPalette, 0.0, 1.0, 1.0);
-//        FractalGenerator generator = new FractalGenerator(image, plane, (z0, max) -> new JuliaSequence(c, z0, max), maxIterations, nbIter -> palette.coloredDot(nbIter, maxIterations), outputPath);
-//        generator.generateImage();
-    }
-    public static void mandelbrotSprint3Image() {
-        int width = 800;
-        int height = 600;
-        int maxIterations = 250;
-        double zoomFactor = 0.003;
-        String outputPath = "mandelbrot_sprint3.png";
-        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        FractalImage image = new FractalImage(bufferedImage);
-        IComplexPlane plane = new ComplexPlane(width, height);
-        plane = new ZoomComplexPlane(plane, zoomFactor);
-        IComplex center = new Complex(-0.75, 0.0);
-        plane = new TranslateComplexPlane(plane, center);
-        IColor palette = new ColoredFixe(ColorPalette.FIRE);
-//        FractalGenerator generator = new FractalGenerator(image, plane, (z0, max) -> new Mandelbrot(z0, z0, max,2), maxIterations, nbIter -> palette.coloredDot(nbIter, maxIterations), outputPath);
-//        generator.generateImage();
-    }
-
-    public static void burningShipSprint3Image() {
-        int width = 800;
-        int height = 800;
-        int maxIterations = 64;
-
-
-        double zoomFactor = 0.00015;
-        String outputPath = "burningship_sprint3.png";
-
-        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        FractalImage image = new FractalImage(bufferedImage);
-        IComplexPlane plane = new ComplexPlane(width, height);
-        plane = new ZoomComplexPlane(plane, zoomFactor);
-        IComplex center = new Complex(-1.755, -0.03);
-        plane = new TranslateComplexPlane(plane, center);
-        IColor palette = new ColoredFixe(ColorPalette.FIRE);
-//        FractalGenerator generator = new FractalGenerator(image, plane, (pixel, max) -> new BurningShipSequence(pixel, new Complex(0, 0), max), maxIterations, nbIter -> palette.coloredDot(nbIter, maxIterations), outputPath);
-//        generator.generateImage();
-    }
-    public static void sprint4Image3(){
-        int width = 800;
-        int height = 800;
-        int maxIterations = 300;
-        double zoomFactor = 0.004;
-        String outputPath = "fractal_lambda.png";
-        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        FractalImage image = new FractalImage(bufferedImage);
-        IComplexPlane plane = new ComplexPlane(width, height);
-        plane = new ZoomComplexPlane(plane, zoomFactor);
-        IComplex c = new Complex(-0.8, 0.156);
-        IColor palette = new ColoredFixe(ColorPalette.GALAXY);
-//        FractalGenerator generator = new FractalGenerator(image, plane, (z0, max) -> new GeneralComplexSequence((zn, initial) -> zn.multiply(zn).add(c), z0, max), maxIterations, nbIter -> palette.coloredDot(nbIter, maxIterations), outputPath);
-//        generator.generateImage();
-    }
-     */
+/**
+ * The Interface class is the command-line entry point of FractaLens.
+ * It reads the options given by the user and configures a
+ * {@link FractalGeneratorBuilder} accordingly.
+ */
+@CommandLine.Command(
+        name = "fractale",
+        description = "Generate a fractal",
+        mixinStandardHelpOptions = true,
+        version = "1.0.0"
+)
+public class Main implements Callable<Integer> {
 
     /**
-     * Teste l'animation de zoom sur la fractale de Mandelbrot (Vallée des Hippocampes).
+     * The kinds of animation that can be generated.
      */
-    public static void testMandelbrotZoomAnimation() {
+    public enum Animation {
 
-        int width = 400;
-        int height = 400;
-        int maxIterations = 250;
-        double startZoom = 0.01;
-        String outputPath = "mandelbrot_zoom_anim.gif";
+        /** No animation: a static image is generated. */
+        NONE,
 
-        IColor palette = new ColoredFixe(ColorPalette.FIRE);
+        /** A zoom on the center of the fractal. */
+        ZOOM,
 
-        IComplex coolCenter = new Complex(-0.743643887, 0.131825904);
-
-        var animationGenerator = new FractalGeneratorBuilder()
-                .withSize(width, height)
-                .withZoom(startZoom)
-                .centeredAt(coolCenter) // Utilisation du nouveau point de mire
-                .withMaxIterations(maxIterations)
-                .usingSequence(fr.univartois.butinfo.fractalens.complex.sequence.EnumSequence.MANDELBROT)
-                .usingPalette(palette)
-                .outputToFile(outputPath)
-                .buildZoomAnimation(40, 0.80);
-
-        animationGenerator.generateImage();
+        /** A rotation of the constant of a Julia sequence. */
+        ROTATION
     }
 
-    public static void testJuliaRotationAnimation() {
+    @CommandLine.Option(
+            names = {"-W", "--width"},
+            description = "width of the fractal (default = ${DEFAULT-VALUE})"
+    )
+    private int width = 400;
 
-        int width = 400;
-        int height = 400;
-        int maxIterations = 150;
-        double zoomFactor = 0.01;
-        String outputPath = "julia_rotation_anim.gif";
+    @CommandLine.Option(
+            names = {"-H", "--height"},
+            description = "height of the fractal (default = ${DEFAULT-VALUE})"
+    )
+    private int height = 400;
 
-        IComplex initialC = new Complex(-0.8, 0.156);
+    @CommandLine.Option(
+            names = {"-Z", "--zoom"},
+            description = "zoom of the fractal: size of one pixel in the complex plane "
+                    + "(default = ${DEFAULT-VALUE})"
+    )
+    private double zoomFactor = 0.005;
 
-        IColor palette = new ColoredFixe(ColorPalette.CYBERPUNK);
+    @CommandLine.Option(
+            names = {"-P", "--palette"},
+            description = "colour palette of the fractal (default = ${DEFAULT-VALUE}, "
+                    + "values = ${COMPLETION-CANDIDATES})"
+    )
+    private EnumPalette palette = EnumPalette.GRAYSCALE;
 
-        var animationGenerator = new FractalGeneratorBuilder()
+    @CommandLine.Option(
+            names = {"-S", "--sequence"},
+            description = "sequence used to build the fractal (default = ${DEFAULT-VALUE}, "
+                    + "values = ${COMPLETION-CANDIDATES}); ignored for the rotation animation"
+    )
+    private EnumSequence sequence = EnumSequence.MANDELBROT;
+
+    @CommandLine.Option(
+            names = {"-M", "--maxIterations"},
+            description = "the maximum of iterations (default = ${DEFAULT-VALUE})"
+    )
+    private int maxIterations = 100;
+
+    @CommandLine.Option(
+            names = {"-N", "--name"},
+            description = "the name of the output file (default = ${DEFAULT-VALUE}); "
+                    + "use a .gif extension for animations"
+    )
+    private String outputPath = "fractal.png";
+
+    @CommandLine.Option(
+            names = {"-A", "--animated"},
+            description = "the kind of animation (default = ${DEFAULT-VALUE}, "
+                    + "values = ${COMPLETION-CANDIDATES})"
+    )
+    private Animation animation = Animation.NONE;
+
+    @CommandLine.Option(
+            names = {"-F", "--frames"},
+            description = "the number of frames of the animation (default = ${DEFAULT-VALUE})"
+    )
+    private int frames = 40;
+
+    @CommandLine.Option(
+            names = {"--zoom-step"},
+            description = "the factor applied to the zoom between two frames "
+                    + "of a zoom animation (default = ${DEFAULT-VALUE})"
+    )
+    private double zoomStep = 0.80;
+
+    @CommandLine.Option(
+            names = {"--center-real"},
+            description = "real part of the center of the fractal (default = ${DEFAULT-VALUE})"
+    )
+    private double centerReal = 0.0;
+
+    @CommandLine.Option(
+            names = {"--center-imaginary"},
+            description = "imaginary part of the center of the fractal (default = ${DEFAULT-VALUE})"
+    )
+    private double centerImaginary = 0.0;
+
+    /**
+     * Launches the command-line interface.
+     *
+     * @param args The arguments given on the command line.
+     */
+    public static void main(String[] args) {
+        int exitCode = new CommandLine(new Main())
+                .setCaseInsensitiveEnumValuesAllowed(true)
+                .execute(args);
+        System.exit(exitCode);
+    }
+
+    @Override
+    public Integer call() {
+        if (!areOptionsValid()) {
+            return 2;
+        }
+
+        System.out.println("Generating the fractal...");
+        System.out.println(" -- width : " + width);
+        System.out.println(" -- height : " + height);
+        System.out.println(" -- zoom : " + zoomFactor);
+        System.out.println(" -- palette : " + palette);
+        System.out.println(" -- sequence : " + sequence);
+        System.out.println(" -- maxIterations : " + maxIterations);
+        System.out.println(" -- animation : " + animation);
+
+        IColor colors = palette.create(maxIterations);
+        IComplex center = new Complex(centerReal, centerImaginary);
+
+        FractalGeneratorBuilder builder = new FractalGeneratorBuilder()
                 .withSize(width, height)
                 .withZoom(zoomFactor)
-                .centeredAt(new Complex(0, 0)) // Il faut toujours centrer Julia sur 0 pour bien la voir
+                .centeredAt(center)
                 .withMaxIterations(maxIterations)
-                .usingPalette(palette)
-                .outputToFile(outputPath)
-                .buildJuliaRotationAnimation(initialC, 60);
+                .usingSequence(sequence)
+                .usingPalette(colors)
+                .outputToFile(outputPath);
 
-        animationGenerator.generateImage();
+        switch (animation) {
+            case ZOOM -> {
+                // Saving the GIF is done by the composite generator itself.
+                builder.buildZoomAnimation(frames, zoomStep).generateImage();
+            }
+            case ROTATION -> {
+                IComplex initialC = new Complex(-0.8, 0.156);
+                builder.buildJuliaRotationAnimation(initialC, frames).generateImage();
+            }
+            case NONE -> {
+                IFractalGenerator generator = builder.build();
+                generator.generateImage();
+                generator.saveImage();
+            }
+        }
+
+        System.out.println("fractal successfully generated in " + outputPath);
+        return 0;
     }
-    public static void main(String[] args) {
-        testMandelbrotZoomAnimation();
-        testJuliaRotationAnimation();
+
+    /**
+     * Checks that the values given by the user can be used to generate a fractal.
+     *
+     * @return Whether all the options are valid.
+     */
+    private boolean areOptionsValid() {
+        if (width <= 0 || height <= 0) {
+            System.err.println("The width and the height must be strictly positive.");
+            return false;
+        }
+        if (maxIterations <= 0) {
+            System.err.println("The maximum number of iterations must be strictly positive.");
+            return false;
+        }
+        if (zoomFactor <= 0) {
+            System.err.println("The zoom must be strictly positive.");
+            return false;
+        }
+        if (animation != Animation.NONE) {
+            if (frames <= 0) {
+                System.err.println("The number of frames must be strictly positive.");
+                return false;
+            }
+            if (!outputPath.toLowerCase().endsWith(".gif")) {
+                System.err.println("An animation must be saved in a .gif file.");
+                return false;
+            }
+        }
+        return true;
     }
 }
