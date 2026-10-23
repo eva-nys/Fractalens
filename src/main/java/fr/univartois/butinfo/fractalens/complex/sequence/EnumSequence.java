@@ -8,6 +8,10 @@ import java.util.function.BiFunction;
 /**
  * Enumeration of the available complex sequences used to generate fractals.
  * Each constant provides a factory to instantiate the corresponding sequence.
+ *
+ * @author Tom Deleau
+ *
+ * @version 1.0
  */
 public enum EnumSequence {
 
