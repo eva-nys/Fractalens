@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * The {@code Complex} class represents an immutable complex number with real and imaginary parts.
  *
- * @author Hugo Halipré
+ * @author Hugo Halipré, Tom Deleau
  *
  * @version 0.1.0
  */
