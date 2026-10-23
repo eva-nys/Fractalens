@@ -31,7 +31,7 @@ import java.io.IOException;
  * The IFractalImage interface defines how to handle the image on which the fractal is
  * drawn.
  *
- * @author Romain Wallon
+ * @author Romain Wallon, Tom Deleau
  *
  * @version 0.1.0
  */
