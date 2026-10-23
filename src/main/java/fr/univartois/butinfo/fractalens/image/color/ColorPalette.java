@@ -6,6 +6,8 @@ import java.util.List;
 /**
  * Ensemble de palettes de couleurs prédéfinies pour la palette fixe.
  * Chaque palette contient au moins 10 couleurs.
+ *
+ * @author Tom Deleau
  */
 public enum ColorPalette {
 
