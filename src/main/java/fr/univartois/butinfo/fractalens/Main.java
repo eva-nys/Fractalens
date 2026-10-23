@@ -161,10 +161,8 @@ public class Main implements Callable<Integer> {
                 .outputToFile(outputPath);
 
         switch (animation) {
-            case ZOOM -> {
-                // Saving the GIF is done by the composite generator itself.
-                builder.buildZoomAnimation(frames, zoomStep).generateImage();
-            }
+            case ZOOM -> builder.buildZoomAnimation(frames, zoomStep).generateImage();
+
             case ROTATION -> {
                 IComplex initialC = new Complex(-0.8, 0.156);
                 builder.buildJuliaRotationAnimation(initialC, frames).generateImage();
