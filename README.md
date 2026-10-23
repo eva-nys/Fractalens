@@ -312,3 +312,55 @@ This project has been developed by:
 - Dunocq Louis
 - Halipre Hugo
 - Nys Eva 
+
+## Guide d'utilisation
+
+
+**Zoom lourd**
+```bash
+./gradlew run --args="-t zoom -f mandelbrot -p magma -n 1500 -w 500 -h 500 -s 0.01 --focus-x=-0.743643887 --focus-y=0.131825904 --frames 150 --zoom-step 0.92 -o mandelbrot_50mo.gif"
+```
+
+**Aide**
+```bash
+./gradlew run --args="--help"
+```
+
+**Version** (le `-V` est conservé, `--version` aussi)
+```bash
+./gradlew run --args="--version"
+```
+
+**Valeurs par défaut**
+```bash
+./gradlew run
+```
+
+**Mandelbrot classique, palette feu**
+```bash
+./gradlew run --args="-f mandelbrot -p fire -n 250 --focus-x=-0.75 -o mandelbrot.png"
+```
+
+**Burning Ship, zoomé sur la proue**
+```bash
+./gradlew run --args="-f burning_ship -p fire -w 800 -h 800 -n 64 -s 0.00015 --focus-x=-1.755 --focus-y=-0.03 -o burningship.png"
+```
+
+**Julia généralisée**
+```bash
+./gradlew run --args="-f generalized_julia -p galaxy -w 800 -h 800 -n 300 -s 0.004 -o julia_gen.png"
+```
+
+**Tricorn**
+```bash
+./gradlew run --args="-f tricorn -p neon -n 150 -s 0.008 -o tricorn.png"
+```
+
+**Zoom dans la vallée des hippocampes**
+```bash
+./gradlew run --args="-t zoom -f mandelbrot -p fire -n 250 -s 0.01 --focus-x=-0.743643887 --focus-y=0.131825904 --frames 40 --zoom-step 0.8 -o zoom.gif"
+```
+**Rotation de la constante de Julia**
+```bash
+./gradlew run --args="-t rotation -p cyberpunk -n 150 -s 0.01 --frames 60 -o julia_rotation.gif"
+```
