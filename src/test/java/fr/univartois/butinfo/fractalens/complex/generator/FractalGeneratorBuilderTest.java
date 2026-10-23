@@ -180,6 +180,9 @@ class FractalGeneratorBuilderTest {
         assertNotNull(generator);
     }
 
+    /**
+     * Test method for {@link FractalGeneratorBuilder#buildZoomAnimation(int, double)}.
+     */
     @Test
     void testZoomAnimated() {
         int nbFrames = 5;
@@ -198,6 +201,9 @@ class FractalGeneratorBuilderTest {
         assertNotNull(animation);
     }
 
+    /**
+     * Test method for {@link FractalGeneratorBuilder#buildJuliaRotationAnimation(IComplex, int)}.
+     */
     @Test
     void testRotationAnimated() {
         IComplex initialC = new Complex(-0.4, 0.6);

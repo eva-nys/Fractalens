@@ -15,12 +15,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * The {@code FractalImageCompositeTest} class tests the {@link FractalImageComposite} class.
+ *
+ * @version 0.1.0
+ */
 class FractalImageCompositeTest {
-
+    /** The composite fractal image generator being tested. */
     private FractalImageComposite composite;
+    /** The file path used for testing GIF creation. */
     private final String testGifPath = "test_animation.gif";
 
+    /**
+     * Sets up the test environment before each test execution by creating a list of generators
+     * and instantiating the composite generator.
+     */
     @BeforeEach
     void setUp() {
         List<IFractalGenerator> generators = new ArrayList<>();
@@ -40,7 +49,9 @@ class FractalImageCompositeTest {
 
         composite = new FractalImageComposite(generators, testGifPath);
     }
-
+    /**
+     * Cleans up temporary test files (GIF and intermediate frames) after each test execution.
+     */
     @AfterEach
     void tearDown() {
         File gifFile = new File(testGifPath);
@@ -55,7 +66,9 @@ class FractalImageCompositeTest {
             }
         }
     }
-
+    /**
+     * Test method for verifying that generating and saving the composite image successfully creates the GIF file.
+     */
     @Test
     void testGenerateImageCreatesGifFile() {
         composite.generateImage();
@@ -63,7 +76,9 @@ class FractalImageCompositeTest {
         File file = new File(testGifPath);
         assertTrue(file.exists());
     }
-
+    /**
+     * Test method for verifying that attempting to compute a single pixel color throws an {@link UnsupportedOperationException}.
+     */
     @Test
     void testComputePixelColorThrowsException() {
         assertThrows(UnsupportedOperationException.class, () -> {
