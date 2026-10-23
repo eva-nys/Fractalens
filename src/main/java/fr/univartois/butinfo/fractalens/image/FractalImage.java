@@ -9,6 +9,7 @@ import java.io.IOException;
 /**
  * The {@code FractalImage} class acts as an adapter.
  * It allows manipulating a {@link BufferedImage} using the {@link IFractalImage} interface methods.
+ * @author Tom Deleau
  */
 public class FractalImage implements IFractalImage {
 
@@ -71,5 +72,15 @@ public class FractalImage implements IFractalImage {
     public void saveAs(String path) throws IOException {
         File destinationFile = new File(path);
         ImageIO.write(img, "png", destinationFile);
+    }
+
+    /**
+     * Returns the underlying {@link BufferedImage} of this fractal image.
+     *
+     * @return The underlying {@link BufferedImage} instance.
+     */
+    @Override
+    public BufferedImage asBufferedImage() {
+        return this.img;
     }
 }

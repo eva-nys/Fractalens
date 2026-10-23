@@ -1,5 +1,6 @@
-package fr.univartois.butinfo.fractalens.complex;
+package fr.univartois.butinfo.fractalens.complex.img.color;
 
+import fr.univartois.butinfo.fractalens.image.color.ColorPalette;
 import org.junit.jupiter.api.Test;
 
 import java.awt.Color;
@@ -12,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * Test class for {@link ColorPalette}.
  */
-public class ColorPaletteTest {
+ class ColorPaletteTest {
 
     /**
      * Tests that all predefined palettes contain a non-null and non-empty list of colors.

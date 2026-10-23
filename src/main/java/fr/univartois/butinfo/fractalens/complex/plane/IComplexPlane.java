@@ -21,7 +21,9 @@
  * USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package fr.univartois.butinfo.fractalens.complex;
+package fr.univartois.butinfo.fractalens.complex.plane;
+
+import fr.univartois.butinfo.fractalens.complex.IComplex;
 
 /**
  * The IComplexPlane interface defines how to link a position in an image to a number on

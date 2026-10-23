@@ -4,15 +4,17 @@ import java.awt.Color;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.function.BiFunction;
-import java.util.function.IntFunction;
 
+import fr.univartois.butinfo.fractalens.image.color.IColor;
 import fr.univartois.butinfo.fractalens.complex.IComplex;
-import fr.univartois.butinfo.fractalens.complex.IComplexPlane;
+import fr.univartois.butinfo.fractalens.complex.plane.IComplexPlane;
 import fr.univartois.butinfo.fractalens.complex.sequence.IComplexSequence;
 import fr.univartois.butinfo.fractalens.image.IFractalImage;
 
 /**
  * The FractalGenerator class generates a fractal image based on a complex number sequence
+ *
+ * @author Tom Deleau, Hugo Halipré, Louis Dunocq
  */
 public class FractalGenerator implements IFractalGenerator {
 
@@ -37,7 +39,7 @@ public class FractalGenerator implements IFractalGenerator {
     /**
      * The color strategy, associating a number of iterations with a color
      */
-    private final IntFunction<Color> palette;
+    private final IColor palette;
 
     /**
      * The path of the file in which the generated image is saved
@@ -47,22 +49,14 @@ public class FractalGenerator implements IFractalGenerator {
     /**
      * Creates a new FractalGenerator
      *
-     * @param image The image on which the fractal is drawn.
-     * @param plane The complex plane linking pixels to complex numbers.
-     * @param sequenceFactory The function building the sequence from {@code z0} and
-     *        the maximum number of iterations.
-     * @param maxIterations The maximum number of iterations allowed for a sequence.
-     * @param palette The color strategy, associating a number of iterations with a
-     *        color.
-     * @param outputPath The path of the file in which the image is saved.
      */
-    public FractalGenerator(IFractalImage image, IComplexPlane plane, BiFunction<IComplex, Integer, IComplexSequence> sequenceFactory, int maxIterations, IntFunction<Color> palette, String outputPath) {
-        this.image = image;
-        this.plane = plane;
-        this.sequenceFactory = sequenceFactory;
-        this.maxIterations = maxIterations;
-        this.palette = palette;
-        this.outputPath = outputPath;
+    public FractalGenerator(FractalGeneratorBuilder builder) {
+        this.image = builder.getImage();
+        this.plane = builder.getPlane();
+        this.sequenceFactory = builder.getFunction();
+        this.maxIterations = builder.getMaxIterations();
+        this.palette = builder.getPalette();
+        this.outputPath = builder.getFileName();
     }
 
     /**
@@ -76,7 +70,6 @@ public class FractalGenerator implements IFractalGenerator {
                 image.setColor(row, column, computePixelColor(row, column));
             }
         }
-        saveImage();
         return image;
     }
 
@@ -93,10 +86,10 @@ public class FractalGenerator implements IFractalGenerator {
         IComplexSequence sequence = sequenceFactory.apply(z0, maxIterations);
 
         int nbIterations = 0;
-        for (IComplex _ : sequence) {
+        for (var _ : sequence) {
             nbIterations++;
         }
-        return palette.apply(nbIterations);
+        return palette.coloredDot(nbIterations, maxIterations);
     }
 
     /**

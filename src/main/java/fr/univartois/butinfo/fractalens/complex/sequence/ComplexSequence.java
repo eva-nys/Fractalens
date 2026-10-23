@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
 /**
  * Independent iterator for traversing the terms of a complex sequence.
  *
- * @author UnivArtois
+ * @author UnivArtois, Louis Dunocq, Hugo Halipré
  * @version 1.0
  */
 public class ComplexSequence implements Iterator<IComplex> {
@@ -33,7 +33,7 @@ public class ComplexSequence implements Iterator<IComplex> {
     private int nbIterations;
 
     /**
-     * Constructs a new iterator for a complex sequence.
+     * Construct a new instance of {@code ComplexSequence} with the specified dimensions.
      *
      * @param sequence      The complex sequence to navigate.
      * @param initialValue  The initial complex number (z0).
@@ -46,11 +46,23 @@ public class ComplexSequence implements Iterator<IComplex> {
         this.nbIterations = 0;
     }
 
+    /**
+     *Check if there are any more elements to go through in the rest of the process.
+     *
+     * @return true if there is a following element, or false otherwise.
+     */
     @Override
     public boolean hasNext() {
         return (nbIterations < maxIterations) && (current.abs() <= 2.0);
     }
 
+    /**
+     *The current complex number of the sequence
+     *
+     * @throw NoSuchElementException if the iteration limit is reached or if the sequence diverges.
+     *
+     * @return The current term of the sequence.
+     */
     @Override
     public IComplex next() {
         if (!hasNext()) {

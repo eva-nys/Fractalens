@@ -1,124 +1,226 @@
 package fr.univartois.butinfo.fractalens;
 
-import fr.univartois.butinfo.fractalens.complex.*;
-import fr.univartois.butinfo.fractalens.complex.sequence.BurningShipSequence;
-import fr.univartois.butinfo.fractalens.complex.sequence.GeneralComplexSequence;
-import fr.univartois.butinfo.fractalens.complex.sequence.JuliaSequence;
-import fr.univartois.butinfo.fractalens.complex.sequence.Mandelbrot;
-import fr.univartois.butinfo.fractalens.generator.FractalGenerator;
-import fr.univartois.butinfo.fractalens.image.FractalImage;
+import java.util.concurrent.Callable;
 
-import java.awt.image.BufferedImage;
+import fr.univartois.butinfo.fractalens.complex.Complex;
+import fr.univartois.butinfo.fractalens.complex.IComplex;
+import fr.univartois.butinfo.fractalens.complex.sequence.EnumSequence;
+import fr.univartois.butinfo.fractalens.generator.FractalGeneratorBuilder;
+import fr.univartois.butinfo.fractalens.generator.IFractalGenerator;
+import fr.univartois.butinfo.fractalens.image.color.EnumPalette;
+import fr.univartois.butinfo.fractalens.image.color.IColor;
+import picocli.CommandLine;
 
-public class Main {
+/**
+ * The Main class is the command-line entry point of FractaLens.
+ * It reads the options given by the user and configures a
+ * {@link FractalGeneratorBuilder} accordingly.
+ */
+@CommandLine.Command(
+        name = "fractale",
+        description = "Generate a fractal",
+        version = "1.0.0"
+)
+public class Main implements Callable<Integer> {
 
-    public static void juliaSprint2() {
-        int width = 800;
-        int height = 600;
-        int maxIterations = 100;
-        double zoomFactor = 0.004;
-        String outputPath = "julia_fractal.png";
+    /**
+     * The kinds of image that can be generated.
+     */
+    public enum ImageType {
 
-        BufferedImage bufferedImage = new BufferedImage(width, height, 1);
-        FractalImage image = new FractalImage(bufferedImage);
-        ComplexPlane basePlane = new ComplexPlane(width, height);
-        ZoomComplexPlane zoomedPlane = new ZoomComplexPlane(basePlane, zoomFactor);
-        IComplex c = new Complex(-0.4, 0.6);
-        Colored colored = new Colored();
-        FractalGenerator generator = new FractalGenerator(image, zoomedPlane, (z0, max) -> new JuliaSequence(c, z0, max), maxIterations, nbIter -> colored.coloredDot(nbIter, maxIterations), outputPath);
-        generator.generateImage();
+        /** A single static image. */
+        SINGLE,
+
+        /** A progressive zoom on the center of the fractal. */
+        ZOOM,
+
+        /** A rotation of the constant of a Julia sequence. */
+        ROTATION
     }
 
-    public static void juliaSprint3Image1() {
-        int width = 800;
-        int height = 800;
-        int maxIterations = 250;
-        double zoomFactor = 0.001;
-        String outputPath = "julia_sprint3_1.png";
-        BufferedImage bufferedImage = new BufferedImage(width, height, 1);
-        FractalImage image = new FractalImage(bufferedImage);
-        IComplexPlane plane = new ComplexPlane(width, height);
-        plane = new ZoomComplexPlane(plane, zoomFactor);
-        IComplex center = new Complex(0.1, 0.6);
-        plane = new TranslateComplexPlane(plane, center);
-        IComplex c = new Complex(-0.4, 0.6);
-        IColor palette = new ColoredFixe(ColorPalette.FIRE);
-        FractalGenerator generator = new FractalGenerator(image, plane, (z0, max) -> new JuliaSequence(c, z0, max), maxIterations, nbIter -> palette.coloredDot(nbIter, maxIterations), outputPath);
-        generator.generateImage();
-    }
+    @CommandLine.Option(
+            names = {"--help"},
+            usageHelp = true,
+            description = "display this help message"
+    )
+    private boolean helpRequested;
 
-    public static void juliaSprint3Image2() {
-        int width = 800;
-        int height = 800;
-        int maxIterations = 250;
-        double zoomFactor = 0.001;
-        String outputPath = "julia_sprint3_2.png";
-        BufferedImage bufferedImage = new BufferedImage(width, height, 1);
-        FractalImage image = new FractalImage(bufferedImage);
-        IComplexPlane plane = new ComplexPlane(width, height);
-        plane = new ZoomComplexPlane(plane, zoomFactor);
-        IComplex center = new Complex(-0.47, -0.21);
-        plane = new TranslateComplexPlane(plane, center);
-        IComplex c = new Complex(0.285, 0.01);
-        IColor fixedPalette = new ColoredFixe(ColorPalette.JULIA_SPRINT3);
-        IColor palette = new ColoredRVB(fixedPalette, 0.0, 1.0, 1.0);
-        FractalGenerator generator = new FractalGenerator(image, plane, (z0, max) -> new JuliaSequence(c, z0, max), maxIterations, nbIter -> palette.coloredDot(nbIter, maxIterations), outputPath);
-        generator.generateImage();
-    }
-    public static void mandelbrotSprint3Image() {
-        int width = 800;
-        int height = 600;
-        int maxIterations = 250;
-        double zoomFactor = 0.003;
-        String outputPath = "mandelbrot_sprint3.png";
-        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        FractalImage image = new FractalImage(bufferedImage);
-        IComplexPlane plane = new ComplexPlane(width, height);
-        plane = new ZoomComplexPlane(plane, zoomFactor);
-        IComplex center = new Complex(-0.75, 0.0);
-        plane = new TranslateComplexPlane(plane, center);
-        IColor palette = new ColoredFixe(ColorPalette.FIRE);
-        FractalGenerator generator = new FractalGenerator(image, plane, (z0, max) -> new Mandelbrot(z0, z0, max), maxIterations, nbIter -> palette.coloredDot(nbIter, maxIterations), outputPath);
-        generator.generateImage();
-    }
+    @CommandLine.Option(
+            names = {"-V", "--version"},
+            versionHelp = true,
+            description = "display the version"
+    )
+    private boolean versionRequested;
 
-    public static void burningShipSprint3Image() {
-        int width = 800;
-        int height = 800;
-        int maxIterations = 64;
+    @CommandLine.Option(
+            names = {"-f", "--fractal-name"},
+            description = "name of the fractal (default = ${DEFAULT-VALUE}, "
+                          + "values = ${COMPLETION-CANDIDATES}); ignored for the rotation type"
+    )
+    private EnumSequence sequence = EnumSequence.MANDELBROT;
 
+    @CommandLine.Option(
+            names = {"-h", "--height"},
+            description = "height of the image in pixels (default = ${DEFAULT-VALUE})"
+    )
+    private int height = 400;
 
-        double zoomFactor = 0.00015;
-        String outputPath = "burningship_sprint3.png";
+    @CommandLine.Option(
+            names = {"-w", "--width"},
+            description = "width of the image in pixels (default = ${DEFAULT-VALUE})"
+    )
+    private int width = 400;
 
-        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        FractalImage image = new FractalImage(bufferedImage);
-        IComplexPlane plane = new ComplexPlane(width, height);
-        plane = new ZoomComplexPlane(plane, zoomFactor);
-        IComplex center = new Complex(-1.755, -0.03);
-        plane = new TranslateComplexPlane(plane, center);
-        IColor palette = new ColoredFixe(ColorPalette.FIRE);
-        FractalGenerator generator = new FractalGenerator(image, plane, (pixel, max) -> new BurningShipSequence(pixel, new Complex(0, 0), max), maxIterations, nbIter -> palette.coloredDot(nbIter, maxIterations), outputPath);
-        generator.generateImage();
-    }
-    public static void sprint4Image3(){
-        int width = 800;
-        int height = 800;
-        int maxIterations = 300;
-        double zoomFactor = 0.004;
-        String outputPath = "fractal_lambda.png";
-        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        FractalImage image = new FractalImage(bufferedImage);
-        IComplexPlane plane = new ComplexPlane(width, height);
-        plane = new ZoomComplexPlane(plane, zoomFactor);
-        IComplex c = new Complex(-0.8, 0.156);
-        IColor palette = new ColoredFixe(ColorPalette.GALAXY);
-        FractalGenerator generator = new FractalGenerator(image, plane, (z0, max) -> new GeneralComplexSequence((zn, initial) -> zn.multiply(zn).add(c), z0, max), maxIterations, nbIter -> palette.coloredDot(nbIter, maxIterations), outputPath);
-        generator.generateImage();
-    }
+    @CommandLine.Option(
+            names = {"-s", "--scale"},
+            description = "scale of the image: size of one pixel in the complex plane "
+                          + "(default = ${DEFAULT-VALUE})"
+    )
+    private double scale = 0.005;
+
+    @CommandLine.Option(
+            names = {"-x", "--focus-x"},
+            description = "real part of the center of the image (default = ${DEFAULT-VALUE})"
+    )
+    private double focusX = 0.0;
+
+    @CommandLine.Option(
+            names = {"-y", "--focus-y"},
+            description = "imaginary part of the center of the image (default = ${DEFAULT-VALUE})"
+    )
+    private double focusY = 0.0;
+
+    @CommandLine.Option(
+            names = {"-n", "--nb-iterations"},
+            description = "maximum number of iterations (default = ${DEFAULT-VALUE})"
+    )
+    private int maxIterations = 100;
+
+    @CommandLine.Option(
+            names = {"-p", "--palette-name"},
+            description = "name of the colour palette (default = ${DEFAULT-VALUE}, "
+                          + "values = ${COMPLETION-CANDIDATES})"
+    )
+    private EnumPalette palette = EnumPalette.GRAYSCALE;
+
+    @CommandLine.Option(
+            names = {"-t", "--type"},
+            description = "type of image to generate (default = ${DEFAULT-VALUE}, "
+                          + "values = ${COMPLETION-CANDIDATES})"
+    )
+    private ImageType type = ImageType.SINGLE;
+
+    @CommandLine.Option(
+            names = {"-o", "--output"},
+            description = "name of the output file (default = ${DEFAULT-VALUE}); "
+                          + "use a .gif extension for zoom and rotation"
+    )
+    private String outputPath = "fractal.png";
+
+    @CommandLine.Option(
+            names = {"--frames"},
+            description = "number of frames of the animation (default = ${DEFAULT-VALUE})"
+    )
+    private int frames = 40;
+
+    @CommandLine.Option(
+            names = {"--zoom-step"},
+            description = "factor applied to the scale between two frames "
+                          + "of a zoom (default = ${DEFAULT-VALUE})"
+    )
+    private double zoomStep = 0.80;
+
+    /**
+     * Launches the command-line interface.
+     *
+     * @param args The arguments given on the command line.
+     */
     public static void main(String[] args) {
-        sprint4Image3();
-        burningShipSprint3Image();
-        mandelbrotSprint3Image();
+        int exitCode = new CommandLine(new Main())
+                .setCaseInsensitiveEnumValuesAllowed(true)
+                .execute(args);
+        System.exit(exitCode);
+    }
+
+    /**
+     * Executes the command based on the provided configuration options.
+     *
+     * @return An integer exit code (0 for success, non-zero for failure).
+     */
+    @Override
+    public Integer call() {
+        if (!areOptionsValid()) {
+            return 2;
+        }
+
+        System.out.println("Generating the fractal...");
+        System.out.println(" -- fractal : " + sequence);
+        System.out.println(" -- width : " + width);
+        System.out.println(" -- height : " + height);
+        System.out.println(" -- scale : " + scale);
+        System.out.println(" -- focus : " + focusX + " + " + focusY + "i");
+        System.out.println(" -- palette : " + palette);
+        System.out.println(" -- nbIterations : " + maxIterations);
+        System.out.println(" -- type : " + type);
+
+        IColor colors = palette.create(maxIterations);
+        IComplex center = new Complex(focusX, focusY);
+
+        FractalGeneratorBuilder builder = new FractalGeneratorBuilder()
+                .withSize(width, height)
+                .withZoom(scale)
+                .centeredAt(center)
+                .withMaxIterations(maxIterations)
+                .usingSequence(sequence)
+                .usingPalette(colors)
+                .outputToFile(outputPath);
+
+        switch (type) {
+            case ZOOM -> builder.buildZoomAnimation(frames, zoomStep).generateImage();
+
+            case ROTATION -> {
+                IComplex initialC = new Complex(-0.8, 0.156);
+                builder.buildJuliaRotationAnimation(initialC, frames).generateImage();
+            }
+            case SINGLE -> {
+                IFractalGenerator generator = builder.build();
+                generator.generateImage();
+                generator.saveImage();
+            }
+        }
+
+        System.out.println("fractal successfully generated in " + outputPath);
+        return 0;
+    }
+
+    /**
+     * Checks that the values given by the user can be used to generate a fractal.
+     *
+     * @return Whether all the options are valid.
+     */
+    private boolean areOptionsValid() {
+        if (width <= 0 || height <= 0) {
+            System.err.println("The width and the height must be strictly positive.");
+            return false;
+        }
+        if (maxIterations <= 0) {
+            System.err.println("The maximum number of iterations must be strictly positive.");
+            return false;
+        }
+        if (scale <= 0) {
+            System.err.println("The scale must be strictly positive.");
+            return false;
+        }
+        if (type != ImageType.SINGLE) {
+            if (frames <= 0) {
+                System.err.println("The number of frames must be strictly positive.");
+                return false;
+            }
+            if (!outputPath.toLowerCase().endsWith(".gif")) {
+                System.err.println("A zoom or a rotation must be saved in a .gif file.");
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -24,13 +24,14 @@
 package fr.univartois.butinfo.fractalens.image;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
  * The IFractalImage interface defines how to handle the image on which the fractal is
  * drawn.
  *
- * @author Romain Wallon
+ * @author Romain Wallon, Tom Deleau
  *
  * @version 0.1.0
  */
@@ -68,4 +69,11 @@ public interface IFractalImage {
      */
     void saveAs(String path) throws IOException;
 
+
+    /**
+     * Récupère l'image sous-jacente au format natif Java.
+     *
+     * @return L'instance de BufferedImage.
+     */
+    BufferedImage asBufferedImage();
 }

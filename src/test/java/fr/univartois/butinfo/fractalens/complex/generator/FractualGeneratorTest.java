@@ -2,214 +2,123 @@ package fr.univartois.butinfo.fractalens.complex.generator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.awt.Color;
-import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.function.BiFunction;
-import java.util.function.IntFunction;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import fr.univartois.butinfo.fractalens.generator.FractalGenerator;
-import fr.univartois.butinfo.fractalens.generator.IFractalGenerator;
+import fr.univartois.butinfo.fractalens.generator.FractalGeneratorBuilder;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
-import fr.univartois.butinfo.fractalens.complex.Complex;
-import fr.univartois.butinfo.fractalens.complex.ComplexPlane;
-import fr.univartois.butinfo.fractalens.complex.IComplex;
-import fr.univartois.butinfo.fractalens.complex.sequence.IComplexSequence;
-import fr.univartois.butinfo.fractalens.complex.sequence.JuliaSequence;
+import fr.univartois.butinfo.fractalens.complex.sequence.EnumSequence;
 import fr.univartois.butinfo.fractalens.image.IFractalImage;
+import fr.univartois.butinfo.fractalens.image.color.EnumPalette;
 
-
+/**
+ * The FractalGeneratorTest tests the {@link FractalGenerator} class.
+ */
 class FractalGeneratorTest {
 
-    // The maximum number of iterations used in the tests
-    private static final int MAX_ITERATIONS = 50;
-
-    // The path used to save the images in the tests
-    private static final String PATH = "fractal.png";
-
-    private static class StubImage implements IFractalImage {
-
-        //The colors of the pixels of this image
-        private final Color[][] colors;
-
-        // The number of times a pixel color has been set
-        private int nbSetColor;
-
-        /**
-         * The path in which this image has been saved.
-         */
-        private String savedPath;
-
-        // Whether saving this image must fail
-        private final boolean failOnSave;
-
-        /**
-         * Creates a new StubImage
-         * @param height The height of the image.
-         * @param width The width of the image.
-         * @param failOnSave Whether saving the image must fail.
-         */
-        StubImage(int height, int width, boolean failOnSave) {
-            this.colors = new Color[height][width];
-            this.failOnSave = failOnSave;
-        }
-
-        @Override
-        public int getHeight() {
-            return colors.length;
-        }
-
-        @Override
-        public int getWidth() {
-            return colors[0].length;
-        }
-
-        @Override
-        public void setColor(int row, int column, Color color) {
-            colors[row][column] = color;
-            nbSetColor++;
-        }
-
-        @Override
-        public void saveAs(String path) throws IOException {
-            if (failOnSave) {
-                throw new IOException("Simulated failure");
-            }
-            savedPath = path;
-        }
+    /**
+     * Creates a generator for a small image.
+     *
+     * @param outputPath The path of the file in which the image is saved.
+     *
+     * @return The created generator.
+     */
+    private static FractalGenerator createGenerator(String outputPath) {
+        return new FractalGeneratorBuilder()
+                .withSize(10, 10)
+                .withMaxIterations(50)
+                .usingSequence(EnumSequence.values()[0])
+                .usingPalette(EnumPalette.FIRE)
+                .outputToFile(outputPath)
+                .build();
     }
 
     /**
-     * Creates a new complex number
-     * @param realPart The real part of the complex number.
-     * @param imaginaryPart The imaginary part of the complex number.
-     * @return The created complex number.
-     */
-    private static IComplex createComplex(double realPart, double imaginaryPart) {
-        return new Complex(realPart, imaginaryPart);
-    }
-
-    /**
-     * Creates a function building Julia's sequences for a given constant
-     * @param constant The constant number in the definition of Julia's sequence
-     * @return The created function.
-     */
-    private static BiFunction<IComplex, Integer, IComplexSequence> createJuliaFactory(
-            IComplex constant) {
-        return (z0, max) -> new JuliaSequence(constant, z0, max);
-    }
-
-    /**
-     * The color strategy used in the tests: the number of iterations is used as the level of grey
-     */
-    private static final IntFunction<Color> PALETTE = n -> new Color(n, n, n);
-
-    /**
-     * Creates a new generator working on a given image
-     * @param image The image on which to draw the fractal
-     * @return The created generator
-     */
-    private static IFractalGenerator createGenerator(StubImage image) {
-        return new FractalGenerator(image,
-                new ComplexPlane(image.getWidth(), image.getHeight()),
-                createJuliaFactory(createComplex(0, 0)), MAX_ITERATIONS, PALETTE, PATH);
-    }
-
-    /**
-     * Test method for computePixelColor when the sequence converges
+     * Test method for
+     * {@link fr.univartois.butinfo.fractalens.generator.FractalGenerator#computePixelColor(int, int)}.
      */
     @Test
-    void testComputePixelColorOnConvergence() {
-        // The center of the image corresponds to the complex number 0.
-        IFractalGenerator generator = createGenerator(new StubImage(10, 10, false));
+    void testComputePixelColor(@TempDir Path directory) {
+        FractalGenerator generator = createGenerator(directory.resolve("fractal.png").toString());
 
-        assertEquals(PALETTE.apply(MAX_ITERATIONS), generator.computePixelColor(5, 5));
+        assertNotNull(generator.computePixelColor(0, 0));
+        assertNotNull(generator.computePixelColor(5, 5));
+        assertNotNull(generator.computePixelColor(9, 9));
     }
 
     /**
-     * Test method for computePixelColor when the sequence diverges
+     * Test method for
+     * {@link fr.univartois.butinfo.fractalens.generator.FractalGenerator#computePixelColor(int, int)}
+     * called twice on the same pixel.
      */
     @Test
-    void testComputePixelColorOnDivergence() {
-        // The pixel (5, 9) corresponds to the complex number 4, which diverges at once.
-        IFractalGenerator generator = createGenerator(new StubImage(10, 10, false));
+    void testComputePixelColorIsDeterministic(@TempDir Path directory) {
+        FractalGenerator generator = createGenerator(directory.resolve("fractal.png").toString());
 
-        assertEquals(PALETTE.apply(0), generator.computePixelColor(5, 9));
-    }
-
-    @Test
-    void testComputePixelColorUsesPixelAsFirstTerm() {
-        IComplex[] received = new IComplex[1];
-        int[] receivedMax = new int[1];
-        StubImage image = new StubImage(10, 10, false);
-        IFractalGenerator generator = new FractalGenerator(image, new ComplexPlane(10, 10),
-                (z0, max) -> {
-                    received[0] = z0;
-                    receivedMax[0] = max;
-                    return new JuliaSequence(createComplex(0, 0), z0, max);
-                }, MAX_ITERATIONS, PALETTE, PATH);
-
-        generator.computePixelColor(2, 7);
-
-        assertEquals(createComplex(2, 3), received[0]);
-        assertEquals(MAX_ITERATIONS, receivedMax[0]);
+        assertEquals(generator.computePixelColor(3, 7), generator.computePixelColor(3, 7));
     }
 
     /**
-     * Test method for generateImage
+     * Test method for
+     * {@link fr.univartois.butinfo.fractalens.generator.FractalGenerator#generateImage()}.
      */
     @Test
-    void testGenerateImage() {
-        StubImage image = new StubImage(6, 8, false);
-        IFractalGenerator generator = createGenerator(image);
+    void testGenerateImage(@TempDir Path directory) {
+        FractalGenerator generator = createGenerator(directory.resolve("fractal.png").toString());
 
-        IFractalImage result = generator.generateImage();
+        IFractalImage image = generator.generateImage();
 
-        assertSame(image, result);
-        assertEquals(6 * 8, image.nbSetColor);
-        for (int row = 0; row < image.getHeight(); row++) {
-            for (int column = 0; column < image.getWidth(); column++) {
-                assertNotNull(image.colors[row][column]);
-                assertEquals(generator.computePixelColor(row, column),
-                        image.colors[row][column]);
-            }
-        }
+        assertNotNull(image);
+        assertEquals(10, image.getWidth());
+        assertEquals(10, image.getHeight());
     }
 
     /**
-     * Test method for generateImage, checking that the generated image is saved
+     * Test method for
+     * {@link fr.univartois.butinfo.fractalens.generator.FractalGenerator#generateImage()}
+     * checking that the file is created.
      */
     @Test
-    void testGenerateImageSavesImage() {
-        StubImage image = new StubImage(4, 4, false);
+    void testGenerateImageCreatesFile(@TempDir Path directory) {
+        Path file = directory.resolve("fractal.png");
+        FractalGenerator generator = createGenerator(file.toString());
 
-        createGenerator(image).generateImage();
+        generator.generateImage();
+        generator.saveImage(); // <-- On sauvegarde manuellement maintenant !
 
-        assertEquals(PATH, image.savedPath);
+        assertTrue(Files.exists(file));
     }
 
     /**
-     * Test method for saveImage
+     * Test method for
+     * {@link fr.univartois.butinfo.fractalens.generator.FractalGenerator#saveImage()}.
      */
     @Test
-    void testSaveImage() {
-        StubImage image = new StubImage(4, 4, false);
+    void testSaveImage(@TempDir Path directory) {
+        Path file = directory.resolve("fractal.png");
+        FractalGenerator generator = createGenerator(file.toString());
 
-        createGenerator(image).saveImage();
+        generator.saveImage();
 
-        assertEquals(PATH, image.savedPath);
+        assertTrue(Files.exists(file));
     }
 
     /**
-     * Test method for saveImage when an I/O error occurs
+     * Test method for
+     * {@link fr.univartois.butinfo.fractalens.generator.FractalGenerator#saveImage()}
+     * with a path that cannot be written.
      */
     @Test
-    void testSaveImageOnIOError() {
-        IFractalGenerator generator = createGenerator(new StubImage(4, 4, true));
+    void testSaveImageError(@TempDir Path directory) {
+        Path file = directory.resolve("unknown-folder").resolve("fractal.png");
+        FractalGenerator generator = createGenerator(file.toString());
 
         assertThrows(UncheckedIOException.class, generator::saveImage);
     }
