@@ -16,14 +16,18 @@ import org.junit.jupiter.api.Test;
  * @version 1.0
  */
 class TranslateComplexPlaneTest {
-
+    /** The base complex plane used for testing translations. */
     private IComplexPlane basePlane;
-
+    /**
+     * Sets up the test environment before each test execution.
+     */
     @BeforeEach
     void setUp() {
         basePlane = new ComplexPlane(800, 600);
     }
-
+    /**
+     * Test method for verifying standard translation of a complex plane.
+     */
     @Test
     void testStandardTranslation() {
         IComplex complexNumber = new Complex(0.1, 0.6);
@@ -34,7 +38,9 @@ class TranslateComplexPlaneTest {
         assertEquals(base.getRealPart() + complexNumber.getRealPart(), result.getRealPart(), 1e-9);
         assertEquals(base.getImaginaryPart() + complexNumber.getImaginaryPart(), result.getImaginaryPart(), 1e-9);
     }
-
+    /**
+     * Test method for verifying translation with a zero offset complex number.
+     */
     @Test
     void testZeroTranslation() {
         IComplex zerocomplexNumber = new Complex(0, 0);
@@ -44,7 +50,9 @@ class TranslateComplexPlaneTest {
         assertEquals(base.getRealPart(), result.getRealPart(), 1e-9);
         assertEquals(base.getImaginaryPart(), result.getImaginaryPart(), 1e-9);
     }
-
+    /**
+     * Test method for verifying translation with large negative coordinate values.
+     */
     @Test
     void testNegativeAndLargeTranslation() {
         IComplex largeNegativeComplexNumber = new Complex(-1000.5, -2000.25);
@@ -54,7 +62,9 @@ class TranslateComplexPlaneTest {
         assertEquals(base.getRealPart() - 1000.5, result.getRealPart(), 1e-9);
         assertEquals(base.getImaginaryPart() - 2000.25, result.getImaginaryPart(), 1e-9);
     }
-
+    /**
+     * Test method for verifying correct translation behavior at the image boundaries.
+     */
     @Test
     void testImageBoundaries() {
         IComplex complexNumber = new Complex(0.5, -0.5);
