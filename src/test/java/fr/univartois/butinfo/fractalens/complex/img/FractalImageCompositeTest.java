@@ -10,7 +10,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +20,10 @@ class FractalImageCompositeTest {
 
     private FractalImageComposite composite;
     private final String testGifPath = "test_animation.gif";
-    private List<BufferedImage> frames;
 
     @BeforeEach
     void setUp() {
         List<IFractalGenerator> generators = new ArrayList<>();
-
         for (int i = 0; i < 2; i++) {
             IFractalGenerator frameGenerator = new FractalGeneratorBuilder()
                     .withSize(10, 10)
@@ -41,7 +38,6 @@ class FractalImageCompositeTest {
             generators.add(frameGenerator);
         }
 
-        frames = new ArrayList<>();
         composite = new FractalImageComposite(generators, testGifPath);
     }
 

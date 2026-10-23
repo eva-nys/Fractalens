@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Test class for {@link BurningShipSequence}.
  */
-public class BurningShipSequenceTest {
+ class BurningShipSequenceTest {
 
     private static final double EPSILON = 1e-9;
 

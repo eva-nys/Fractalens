@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Test class for the {@link ColoredRVB} decorator.
  */
-public class ColoredRVBTest {
+ class ColoredRVBTest {
 
     /**
      * Tests filtering to keep only the red channel.

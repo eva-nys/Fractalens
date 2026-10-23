@@ -54,7 +54,7 @@ class GeneralComplexSequenceTest {
      */
     private static int count(IComplexSequence sequence) {
         int nbTerms = 0;
-        for (IComplex ignored : sequence) {
+        for (var _ : sequence) {
             nbTerms++;
         }
         return nbTerms;
