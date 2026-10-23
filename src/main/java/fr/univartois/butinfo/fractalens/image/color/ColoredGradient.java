@@ -2,6 +2,14 @@ package fr.univartois.butinfo.fractalens.image.color;
 
 import java.awt.*;
 
+/**
+ * The {@code ColoredGradient} class represents a gradient color strategy
+ * that computes a smooth transition between two colors based on the iteration count.
+ *
+ * @author Louis Dunocq
+ *
+ * @version 0.1.0
+ */
 public class ColoredGradient implements IColor {
 
     // first color of gradiant
@@ -20,6 +28,14 @@ public class ColoredGradient implements IColor {
         this.secondColor = secondColor;
     }
 
+    /**
+     * Determines the color of a pixel by interpolating between the first and second colors
+     * based on the ratio of the current iteration to the maximum number of iterations.
+     *
+     * @param iteration The iteration count for the pixel.
+     * @param max       The maximum number of iterations.
+     * @return The interpolated {@link Color} for the pixel.
+     */
     @Override
     public Color coloredDot(int iteration, int max) {
 

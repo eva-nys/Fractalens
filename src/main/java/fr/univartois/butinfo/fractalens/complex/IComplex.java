@@ -26,7 +26,7 @@ package fr.univartois.butinfo.fractalens.complex;
 /**
  * The IComplex interface defines the methods for making operations on complex numbers.
  *
- * @author Romain Wallon
+ * @author Romain Wallon, Louis Dunocq
  *
  * @version 0.1.0
  */

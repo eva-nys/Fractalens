@@ -4,6 +4,8 @@ import java.util.function.Function;
 
 /**
  * Énumération des stratégies de palettes de couleurs disponibles.
+ *
+ * @author  Louis Dunocq
  */
 public enum EnumPalette {
 

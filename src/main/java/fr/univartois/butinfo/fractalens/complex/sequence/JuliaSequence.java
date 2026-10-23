@@ -8,13 +8,22 @@ import java.util.Iterator;
  * This class generates the sequence of complex numbers used to determine
  * whether a given initial point belongs to the Julia set.
  *
- * @author The Fractalens Team
+ * @author The Fractalens Team, Louis Dunocq, Eva Nys
  * @version 1.0
  */
 public class JuliaSequence implements IComplexSequence {
 
+    /**
+     *The constant complex number
+     */
     private final IComplex c;
+    /**
+     *The initial value of the sequence.
+     */
     private final IComplex z0;
+    /**
+     * The maximum number of iterations for this sequence.
+     */
     private final int maxIterations;
 
     /**
