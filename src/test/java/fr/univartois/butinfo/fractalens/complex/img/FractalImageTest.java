@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Test class for the {@link FractalImage} adapter.
  * It ensures 100% coverage of the adapter's methods.
  */
-public class FractalImageTest {
+ class FractalImageTest {
 
     /**
      * Helper method to create a FractalImage instance.

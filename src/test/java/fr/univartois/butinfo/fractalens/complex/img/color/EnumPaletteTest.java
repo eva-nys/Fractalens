@@ -1,4 +1,4 @@
-package fr.univartois.butinfo.fractalens.image.color;
+package fr.univartois.butinfo.fractalens.complex.img.color;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -6,6 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import fr.univartois.butinfo.fractalens.image.color.ColoredFixe;
+import fr.univartois.butinfo.fractalens.image.color.ColoredRVB;
+import fr.univartois.butinfo.fractalens.image.color.EnumPalette;
+import fr.univartois.butinfo.fractalens.image.color.IColor;
 import org.junit.jupiter.api.Test;
 
 /**

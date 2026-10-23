@@ -84,7 +84,7 @@ public class FractalGenerator implements IFractalGenerator {
         IComplexSequence sequence = sequenceFactory.apply(z0, maxIterations);
 
         int nbIterations = 0;
-        for (IComplex _ : sequence) {
+        for (var _ : sequence) {
             nbIterations++;
         }
         return palette.coloredDot(nbIterations, maxIterations);

@@ -2,7 +2,6 @@ package fr.univartois.butinfo.fractalens.complex.sequence;
 
 import fr.univartois.butinfo.fractalens.complex.IComplex;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 /**
  * Independent iterator for traversing the terms of a complex sequence.
@@ -38,4 +37,10 @@ public class Mandelbrot implements IComplexSequence {
     public Iterator<IComplex> iterator() {
         return new ComplexSequence(this, z0, maxIterations);
     }
+
+    public IComplex getC() {
+
+        return c;
+    }
+
 }
